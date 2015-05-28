@@ -22,7 +22,7 @@ android:layout_height="fill_parent">
 
         <fragment
             android:id="@+id/country_fragment"
-            android:name="com.school.guidoschmitz.happyhours.FavoritesFragment"
+            android:name="com.school.guidoschmitz.happyhours.fragments.FavoritesFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />

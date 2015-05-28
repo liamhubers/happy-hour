@@ -1,23 +1,18 @@
-package com.school.guidoschmitz.happyhours;
+package com.school.guidoschmitz.happyhours.adapters;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.models.Location;
 
-import java.util.List;
+public class FavoritesAdapter extends ArrayAdapter<Location> {
 
-/**
- * Created by Liam Hubers on 27-5-2015.
- */
-public class FavoritesAdapter extends ArrayAdapter<Bar> {
-
-    public FavoritesAdapter(Context context, int resource, Bar[] items) {
+    public FavoritesAdapter(Context context, int resource, Location[] items) {
         super(context, resource, items);
     }
 
@@ -32,16 +27,16 @@ public class FavoritesAdapter extends ArrayAdapter<Bar> {
             v = vi.inflate(R.layout.activity_favorites_list_item, null);
         }
 
-        Bar bar = getItem(position);
+        Location location = getItem(position);
 
         TextView name = (TextView) v.findViewById(R.id.name);
-        name.setText(bar.getName());
+        name.setText(location.getName());
 
         TextView address = (TextView) v.findViewById(R.id.address);
-        address.setText(bar.getAddress());
+        address.setText(location.getAddress());
 
         ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
-        thumbnail.setImageResource(bar.getThumbnail());
+        thumbnail.setImageResource(location.getThumbnail());
 
         return v;
     }

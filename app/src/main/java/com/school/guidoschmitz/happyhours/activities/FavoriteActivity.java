@@ -1,4 +1,4 @@
-package com.school.guidoschmitz.happyhours;
+package com.school.guidoschmitz.happyhours.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -9,9 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import com.school.guidoschmitz.happyhours.R;
 
 
-public class FavoritesActivity extends ActionBarActivity {
+public class FavoriteActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

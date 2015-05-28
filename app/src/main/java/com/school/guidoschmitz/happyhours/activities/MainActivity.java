@@ -1,8 +1,7 @@
-package com.school.guidoschmitz.happyhours;
+package com.school.guidoschmitz.happyhours.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.school.guidoschmitz.happyhours.R;
 
 
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent = new Intent(this, LocationDetailActivity.class);
         startActivity(intent);
         return true;
     }

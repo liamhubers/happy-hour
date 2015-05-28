@@ -1,16 +1,13 @@
-package com.school.guidoschmitz.happyhours;
+package com.school.guidoschmitz.happyhours.models;
 
 import android.text.Spanned;
 
-/**
- * Created by Liam Hubers on 27-5-2015.
- */
-public class Bar {
+public class Location {
     private Spanned name;
     private Spanned address;
     private Integer thumbnail;
 
-    public Bar(Spanned name, Spanned address, Integer thumbnail) {
+    public Location(Spanned name, Spanned address, Integer thumbnail) {
         this.setName(name);
         this.setAddress(address);
         this.setThumbnail(thumbnail);

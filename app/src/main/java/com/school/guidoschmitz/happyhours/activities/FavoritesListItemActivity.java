@@ -1,12 +1,13 @@
-package com.school.guidoschmitz.happyhours;
+package com.school.guidoschmitz.happyhours.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.school.guidoschmitz.happyhours.R;
 
 
-public class FavoritesListItem extends ActionBarActivity {
+public class FavoritesListItemActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
