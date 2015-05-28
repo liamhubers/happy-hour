@@ -1,29 +1,122 @@
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:background="#28000000">
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"/>
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"/>
     </LinearLayout>
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="true">
-
-        <TextView
-            android:text="@string/hello_world"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true" android:background="#F6F6F6">
 
+        <fragment android:layout_width="match_parent"
+                  android:layout_height="200dip"
+                  android:name="com.google.android.gms.maps.MapFragment" android:id="@+id/map"
+                  android:layout_below="@+id/linearLayout2" android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_below="@+id/map"
+                android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+                android:paddingLeft="10dip" android:paddingRight="10dip">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_below="@+id/map"
+                    android:layout_centerHorizontal="true" android:id="@+id/linearLayout" android:layout_marginTop="10dip"
+                    android:layout_marginBottom="10dip">
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_weight="1">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Prinsegracht  14, 2512 GA Den Haag"
+                            android:id="@+id/address_text" android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+                            android:textColor="#000000"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Club Seven"
+                            android:id="@+id/textView"
+                            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" android:textColor="#000000"/>
+                </RelativeLayout>
+                <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favorite"
+                        android:id="@+id/favorite_button" android:onClick="toFavorites"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/linearLayout2"
+                    android:layout_alignParentStart="false" android:layout_alignParentBottom="false"
+                    android:layout_marginTop="10dip" android:layout_marginBottom="5dip"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Actie van vandaag"
+                        android:id="@+id/textView2" android:textColor="#ff39e1ff"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="10 bier voor 10,-"
+                        android:id="@+id/textView3" android:layout_weight="1" android:textColor="#000000"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+                    android:layout_marginTop="20dip">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textView4" android:layout_marginBottom="5dip" android:textColor="#ff39e1ff"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Lorem ipsum beschrijving van het café komt hierin.. Test lorem ipsum hodor"
+                        android:id="@+id/textView5" android:textColor="#000000"/>
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
