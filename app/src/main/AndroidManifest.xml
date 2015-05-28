@@ -18,7 +18,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -26,6 +25,14 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/detail_name" >
+        </activity>
+        <activity
+            android:name=".FavoritesActivity"
+            android:label="@string/favorites_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,14 +40,14 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".DetailActivity"
-            android:label="@string/detail_name">
-        </activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDtCynTsS_eHSGsgLtLF7aNsNnWS1WUph0" />
+
+        <activity
+            android:name=".FavoritesListItem"
+            android:label="@string/title_activity_favorites_list_item" >
+        </activity>
     </application>
 
 </manifest>

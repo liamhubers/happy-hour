@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Happy Hours</string>
     <string name="detail_name">Details</string>
+    <string name="favorites_name">Favorieten</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_favorites">FavoritesActivity</string>
+    <string name="title_activity_favorites_list_item">FavoritesListItem</string>
 </resources>
