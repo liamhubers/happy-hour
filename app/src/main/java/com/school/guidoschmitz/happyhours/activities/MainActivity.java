@@ -1,11 +1,16 @@
 package com.school.guidoschmitz.happyhours.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -13,7 +18,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.school.guidoschmitz.happyhours.repositories.LocationCacheRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
+import com.school.guidoschmitz.happyhours.models.Location;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -24,6 +35,16 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        registerReceiver(
+                new Receiver(),
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION
+                )
+        );
+
+        LocationRepository.cache = new LocationCacheRepository(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -31,6 +52,16 @@ public class MainActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    public void all(View view) {
+        ArrayList<Location> locations = LocationRepository.all();
+        Log.i("all", locations + "");
+    }
+
+    public void single(View view) {
+        Location location = LocationRepository.get(2);
+        Log.i("single", location + "");
     }
 
     @Override

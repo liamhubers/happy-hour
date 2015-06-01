@@ -1,39 +1,52 @@
 package com.school.guidoschmitz.happyhours.models;
 
-import android.text.Spanned;
-
+/**
+ * Created by Liam Hubers on 29-5-2015.
+ */
 public class Location {
-    private Spanned name;
-    private Spanned address;
-    private Integer thumbnail;
+    private int id;
+    private String name;
+    private String description;
+    private double lat;
+    private double lon;
 
-    public Location(Spanned name, Spanned address, Integer thumbnail) {
-        this.setName(name);
-        this.setAddress(address);
-        this.setThumbnail(thumbnail);
+    public int getId() {
+        return id;
     }
 
-    public void setName(Spanned name) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setAddress(Spanned address) {
-        this.address = address;
-    }
-
-    public void setThumbnail(Integer thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Spanned getName() {
-        return this.name;
-    }
-
-    public Spanned getAddress() {
-        return this.address;
-    }
-
-    public Integer getThumbnail() {
-        return this.thumbnail;
     }
 }
