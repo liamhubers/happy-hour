@@ -9,16 +9,13 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.school.guidoschmitz.happyhours.R;
 
 public class LoginActivity extends FragmentActivity {
 
     private static final String TAG = "FacebookLogin";
-    public static final String EXTRA_PROFILE = "profile";
 
     private CallbackManager callbackManager;
 
@@ -49,7 +46,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
     @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.callbackManager.onActivityResult(requestCode, resultCode, data);
 
