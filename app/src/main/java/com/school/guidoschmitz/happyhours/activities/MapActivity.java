@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
 
 
-public class MainActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
 
