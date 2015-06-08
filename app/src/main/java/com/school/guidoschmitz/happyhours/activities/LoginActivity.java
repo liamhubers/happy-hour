@@ -50,7 +50,7 @@ public class LoginActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         this.callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        Intent intent = new Intent(getBaseContext(), MapActivity.class);
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         startActivity(intent);
     }
 }
