@@ -1,18 +1,15 @@
 package com.school.guidoschmitz.happyhours.activities;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -21,85 +18,81 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.school.guidoschmitz.happyhours.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
-public class LoginActivity extends FragmentActivity implements LocationListener {
-
-    private static final String TAG = "FacebookLogin";
+public class LoginActivity extends Activity implements View.OnClickListener {
 
     private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create();
+
+        checkForLogin(AccessToken.getCurrentAccessToken());
+
+        setAccessTokenTracker();
+        setLoginManager();
+
         setContentView(R.layout.activity_login);
 
-        this.callbackManager = CallbackManager.Factory.create();
+        loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(this);
+    }
 
+    private void checkForLogin(AccessToken currentAccessToken) {
+        if (currentAccessToken != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void setAccessTokenTracker() {
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                checkForLogin(newAccessToken);
+            }
+        };
+    }
+
+    private void setLoginManager() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.i(TAG, "Succeed");
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onCancel() {
-                Log.i(TAG, "Cancelled");
+                Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException e) {
-                Log.i(TAG, "Something went wrong");
             }
         });
-
-        getHash();
-    }
-
-    private void getHash() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo("com.school.guidoschmitz.happyhours", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.callbackManager.onActivityResult(requestCode, resultCode, data);
-
-        Intent intent = new Intent(getBaseContext(), MapActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-
+    public void onClick(View v) {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
     }
 }
