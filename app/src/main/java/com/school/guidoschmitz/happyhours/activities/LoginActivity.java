@@ -47,6 +47,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void checkForLogin(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
