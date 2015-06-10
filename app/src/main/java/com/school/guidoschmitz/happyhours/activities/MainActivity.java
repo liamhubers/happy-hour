@@ -16,9 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.adapters.NavAdapter;
 import com.school.guidoschmitz.happyhours.fragments.FavoritesFragment;
@@ -26,6 +30,9 @@ import com.school.guidoschmitz.happyhours.fragments.MainFragment;
 import com.school.guidoschmitz.happyhours.models.NavItem;
 import com.school.guidoschmitz.happyhours.models.RoundImage;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -44,13 +51,12 @@ public class MainActivity extends ActionBarActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        // Round the profile image
-        ImageView profileView = (ImageView) findViewById(R.id.avatar);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
-        RoundImage roundImage = new RoundImage(bitmap);
-        profileView.setImageDrawable(roundImage);
+        setRoundImage();
+        setUsername();
 
         navItems = new ArrayList<>();
         navItems.add(new NavItem("Happy Hours", "", R.drawable.home));
@@ -81,22 +87,35 @@ public class MainActivity extends ActionBarActivity
 
         drawerLayout.setDrawerListener(drawerToggle);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         placeStartFragment();
-        setClickSettings();
+        setLogoutListener();
+        //setClickSettings();
     }
 
-    private void setClickSettings() {
-        ImageView settings = (ImageView)findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
+//    private void setClickSettings() {
+//        ImageView settings = (ImageView)findViewById(R.id.settings);
+//        settings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
+
+    private void setUsername() {
+        Intent intent = getIntent();
+
+        TextView username = (TextView) findViewById(R.id.username);
+        username.setText("Thom Vrijmoed");
+    }
+
+    private void setRoundImage() {
+        // Round the profile image
+        ImageView profileView = (ImageView) findViewById(R.id.avatar);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+        RoundImage roundImage = new RoundImage(bitmap);
+        profileView.setImageDrawable(roundImage);
     }
 
     @Override
@@ -148,5 +167,19 @@ public class MainActivity extends ActionBarActivity
         drawerList.setItemChecked(position, true);
         setTitle(navItems.get(position).getTitle());
         drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    private void setLogoutListener() {
+        Button logout = (Button)findViewById(R.id.logout_button);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 }
