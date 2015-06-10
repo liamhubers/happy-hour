@@ -9,6 +9,8 @@ public class Location {
     private double lat;
     private double lon;
 
+    public Location() {}
+
     public Location(String name, String address, int thumbnail) {
         this.name = name;
         this.address = address;
