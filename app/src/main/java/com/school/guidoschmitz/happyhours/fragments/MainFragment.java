@@ -1,14 +1,19 @@
 package com.school.guidoschmitz.happyhours.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Criteria;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,6 +46,7 @@ public class MainFragment extends Fragment {
 
         map = mapView.getMap();
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.setMyLocationEnabled(true);
 
         ArrayList<Location> locations = LocationRepository.all();
 
@@ -60,7 +66,42 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 15));
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(locationManager.getBestProvider(new Criteria(), false), 5000, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+        android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+        if(location != null) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        }
+        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            private boolean set = false;
+            @Override
+            public void onMyLocationChange(android.location.Location location) {
+                if(!set) {
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    set = true;
+                }
+            }
+        });
 
         return view;
     }
