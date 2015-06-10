@@ -11,9 +11,6 @@ import com.school.guidoschmitz.happyhours.models.Location;
 
 import java.util.ArrayList;
 
-/**
- * Created by Liam Hubers on 29-5-2015.
- */
 public class LocationCacheRepository implements LocationRepositoryInterface {
     private static SQLiteDatabase database;
 
@@ -39,7 +36,7 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
 
     @Override
     public Location get(int id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location._ID + " = "+id, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location._ID + " = " + id, null);
 
         if (cursor.moveToFirst()) {
             while (cursor.isAfterLast() == false) {
@@ -51,7 +48,7 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
     }
 
     public void setLocations(ArrayList<Location> locations) {
-        for(int i = 0; i < locations.size(); i++) {
+        for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(DBContract.Location._ID, locations.get(i).getId());
             values.put(DBContract.Location.NAME, locations.get(i).getName());
