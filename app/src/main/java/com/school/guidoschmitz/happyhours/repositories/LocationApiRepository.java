@@ -42,6 +42,17 @@ public class LocationApiRepository implements LocationRepositoryInterface {
         return null;
     }
 
+    public Location getByName(String name) {
+        try {
+            String JSON = new Api().execute("http://happy-hours.guidoschmitz.nl/locations?name=" + name).get();
+            return parseJSON(new JSONObject(JSON));
+        } catch (Exception e) {
+            Log.i("API", "Couldn't fetch location with name " + name);
+        }
+
+        return null;
+    }
+
     private Location parseJSON(JSONObject object) {
         Location location = new Location();
 

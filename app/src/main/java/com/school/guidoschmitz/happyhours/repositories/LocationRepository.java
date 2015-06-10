@@ -21,6 +21,10 @@ public class LocationRepository {
         return repository.all();
     }
 
+    public static Location getByName(String name) {
+        return repository.getByName(name);
+    }
+
     public static void setLocations(ArrayList<Location> locations) {
         cache.setLocations(locations);
     }

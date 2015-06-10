@@ -47,6 +47,11 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
         return null;
     }
 
+    @Override
+    public Location getByName(String name) {
+        return null;
+    }
+
     public void setLocations(ArrayList<Location> locations) {
         for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
