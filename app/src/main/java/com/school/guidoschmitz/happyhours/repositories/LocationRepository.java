@@ -4,9 +4,6 @@ import com.school.guidoschmitz.happyhours.models.Location;
 
 import java.util.ArrayList;
 
-/**
- * Created by Liam Hubers on 29-5-2015.
- */
 public class LocationRepository {
     private static LocationRepositoryInterface repository;
     private static LocationApiRepository api = new LocationApiRepository();

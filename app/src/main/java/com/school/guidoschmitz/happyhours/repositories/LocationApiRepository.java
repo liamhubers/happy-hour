@@ -10,21 +10,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Liam Hubers on 29-5-2015.
- */
 public class LocationApiRepository implements LocationRepositoryInterface {
     @Override
     public ArrayList<Location> all() {
         ArrayList<Location> locations = new ArrayList<>();
-        try{
+        try {
             String JSON = new Api().execute("http://happy-hours.guidoschmitz.nl/locations").get();
             JSONArray array = new JSONArray(JSON);
 
-            for(int i = 0; i < array.length(); i++) {
+            for (int i = 0; i < array.length(); i++) {
                 locations.add(parseJSON(new JSONObject(array.get(i).toString())));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.i("API", "Couldn't fetch location data");
         }
 
@@ -38,8 +35,8 @@ public class LocationApiRepository implements LocationRepositoryInterface {
         try {
             String JSON = new Api().execute("http://happy-hours.guidoschmitz.nl/locations/" + id).get();
             return parseJSON(new JSONObject(JSON));
-        } catch(Exception e) {
-            Log.i("API", "Couldn't fetch location with id "+id);
+        } catch (Exception e) {
+            Log.i("API", "Couldn't fetch location with id " + id);
         }
 
         return null;
@@ -54,7 +51,7 @@ public class LocationApiRepository implements LocationRepositoryInterface {
             location.setDescription(object.getString("description"));
             location.setLat(object.getDouble("lat"));
             location.setLon(object.getDouble("lon"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.i("JSON", "Failed to parse object to location");
         }
 

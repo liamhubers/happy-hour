@@ -3,8 +3,10 @@ package com.school.guidoschmitz.happyhours.activities;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -20,11 +22,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.adapters.NavAdapter;
 import com.school.guidoschmitz.happyhours.fragments.FavoritesFragment;
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
 import com.school.guidoschmitz.happyhours.models.NavItem;
 import com.school.guidoschmitz.happyhours.models.RoundImage;
+import com.school.guidoschmitz.happyhours.repositories.LocationCacheRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import java.util.ArrayList;
 import java.util.Set;

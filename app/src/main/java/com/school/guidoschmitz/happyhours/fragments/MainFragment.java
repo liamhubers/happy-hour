@@ -2,6 +2,8 @@ package com.school.guidoschmitz.happyhours.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +16,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
+import com.school.guidoschmitz.happyhours.models.Location;
+import com.school.guidoschmitz.happyhours.repositories.LocationCacheRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
-public class MainFragment extends Fragment
-{
+import java.util.ArrayList;
+
+public class MainFragment extends Fragment {
     private MapView mapView;
     private GoogleMap map;
 
@@ -25,22 +32,24 @@ public class MainFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
-        mapView = (MapView)view.findViewById(R.id.map_view);
+        getActivity().registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        LocationRepository.cache = new LocationCacheRepository(getActivity());
+        LocationRepository.setConnectivity(true);
+
+        mapView = (MapView) view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
 
         map = mapView.getMap();
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        LatLng latLng1 = new LatLng(52.080182, 4.316461);
-        LatLng latLng2 = new LatLng(52.081038, 4.315759);
+        ArrayList<Location> locations = LocationRepository.all();
 
-        map.addMarker(new MarkerOptions()
-                .position(latLng1)
-                .title("Haagse Kluis"));
-
-        map.addMarker(new MarkerOptions()
-                .position(latLng2)
-                .title("Danzig"));
+        for (Location location : locations) {
+            LatLng latLng = new LatLng(location.getLat(), location.getLon());
+            map.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(location.getName()));
+        }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -51,7 +60,7 @@ public class MainFragment extends Fragment
             }
         });
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 15));
+        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 15));
 
         return view;
     }
