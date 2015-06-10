@@ -75,6 +75,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                loginResult.getAccessToken().getUserId();
+
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }

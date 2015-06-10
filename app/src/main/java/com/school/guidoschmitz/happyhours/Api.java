@@ -14,9 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * Created by Liam Hubers on 31-5-2015.
- */
 public class Api extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {

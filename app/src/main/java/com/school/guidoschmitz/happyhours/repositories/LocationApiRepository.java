@@ -60,6 +60,7 @@ public class LocationApiRepository implements LocationRepositoryInterface {
             location.setId(object.getInt("id"));
             location.setName(object.getString("name"));
             location.setDescription(object.getString("description"));
+            location.setAddress(object.getString("address"));
             location.setLat(object.getDouble("lat"));
             location.setLon(object.getDouble("lon"));
         } catch (Exception e) {

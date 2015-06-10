@@ -39,17 +39,17 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
 
         referredIntent = getIntent();
 
-//        registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-//        LocationRepository.cache = new LocationCacheRepository(this);
-//        LocationRepository.setConnectivity(true);
-//        location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
+        registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        LocationRepository.cache = new LocationCacheRepository(this);
+        LocationRepository.setConnectivity(true);
+        location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //this.setData();
+        this.setData();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -78,16 +78,11 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        //LatLng latLng = new LatLng(location.getLat(), location.getLon());
-        LatLng latLng = new LatLng(52.070498, 4.300700);
-
-//        map.addMarker(new MarkerOptions()
-//                .position(latLng)
-//                .title(location.getName()));
+        LatLng latLng = new LatLng(location.getLat(), location.getLon());
 
         map.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title("Club Seven"));
+                .title(location.getName()));
 
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -103,14 +98,14 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
         startActivity(i);
     }
 
-//    public void setData() {
-//        TextView name = (TextView) findViewById(R.id.name_text);
-//        name.setText(location.getName());
-//
-//        TextView address = (TextView) findViewById(R.id.address_text);
-//        address.setText(location.getAddress());
-//
-//        TextView description = (TextView) findViewById(R.id.description_text);
-//        description.setText(location.getDescription());
-//    }
+    public void setData() {
+        TextView name = (TextView) findViewById(R.id.name_text);
+        name.setText(location.getName());
+
+        TextView address = (TextView) findViewById(R.id.address_text);
+        address.setText(location.getAddress());
+
+        TextView description = (TextView) findViewById(R.id.description_text);
+        description.setText(location.getDescription());
+    }
 }

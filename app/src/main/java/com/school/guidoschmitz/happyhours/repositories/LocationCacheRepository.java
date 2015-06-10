@@ -53,11 +53,14 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
     }
 
     public void setLocations(ArrayList<Location> locations) {
+        database.execSQL("DELETE FROM " + DBContract.Location.TABLE);
+
         for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(DBContract.Location._ID, locations.get(i).getId());
             values.put(DBContract.Location.NAME, locations.get(i).getName());
             values.put(DBContract.Location.DESCRIPTION, locations.get(i).getDescription());
+            values.put(DBContract.Location.ADDRESS, locations.get(i).getAddress());
             values.put(DBContract.Location.LAT, locations.get(i).getLat());
             values.put(DBContract.Location.LON, locations.get(i).getLon());
 
