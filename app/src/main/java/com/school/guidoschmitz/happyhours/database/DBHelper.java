@@ -20,6 +20,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 DBContract.Location._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 DBContract.Location.NAME +" VARCHAR NOT NULL, "+
                 DBContract.Location.DESCRIPTION +" TEXT NOT NULL, "+
+                DBContract.Location.ADDRESS +" VARCHAR NOT NULL, "+
+                DBContract.Location.THUMBNAIL +" VARCHAR, "+
                 DBContract.Location.LAT +" DOUBLE(10,6) NOT NULL, "+
                 DBContract.Location.LON +" DOUBLE(10,6) NOT NULL"+
                 ")");

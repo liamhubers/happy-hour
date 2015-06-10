@@ -1,12 +1,11 @@
 package com.school.guidoschmitz.happyhours.models;
 
-/**
- * Created by Liam Hubers on 29-5-2015.
- */
 public class Location {
     private int id;
     private String name;
     private String description;
+    private String address;
+    private String thumbnail;
     private double lat;
     private double lon;
 
@@ -48,5 +47,21 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
