@@ -16,9 +16,9 @@ import com.school.guidoschmitz.happyhours.models.Location;
 public class FavoritesFragment extends ListFragment {
 
     Location[] favorites = new Location[]{
-            new Location(Html.fromHtml("Club Seven"), Html.fromHtml("Prinsegracht 14, 2512 GA Den Haag"), R.drawable.bar1),
-            new Location(Html.fromHtml("Caf&eacute; Beurs"), Html.fromHtml("Kruiskade 55, 3012 EE Rotterdam"), R.drawable.bar2),
-            new Location(Html.fromHtml("De Drie Musketiers"), Html.fromHtml("Dorpsstraat 27, Nootdorp"), R.drawable.bar3)
+            new Location(Html.fromHtml("Club Seven").toString(), Html.fromHtml("Prinsegracht 14, 2512 GA Den Haag").toString(), R.drawable.bar1),
+            new Location(Html.fromHtml("Caf&eacute; Beurs").toString(), Html.fromHtml("Kruiskade 55, 3012 EE Rotterdam").toString(), R.drawable.bar2),
+            new Location(Html.fromHtml("De Drie Musketiers").toString(), Html.fromHtml("Dorpsstraat 27, Nootdorp").toString(), R.drawable.bar3)
     };
 
     @Override

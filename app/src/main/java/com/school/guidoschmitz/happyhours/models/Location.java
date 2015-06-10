@@ -5,9 +5,15 @@ public class Location {
     private String name;
     private String description;
     private String address;
-    private String thumbnail;
+    private int thumbnail;
     private double lat;
     private double lon;
+
+    public Location(String name, String address, int thumbnail) {
+        this.name = name;
+        this.address = address;
+        this.thumbnail = thumbnail;
+    }
 
     public int getId() {
         return id;
@@ -49,11 +55,11 @@ public class Location {
         this.name = name;
     }
 
-    public String getThumbnail() {
+    public int getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
+    public void setThumbnail(int thumbnail) {
         this.thumbnail = thumbnail;
     }
 
