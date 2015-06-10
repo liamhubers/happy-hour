@@ -1,39 +1,75 @@
 package com.school.guidoschmitz.happyhours.models;
 
-import android.text.Spanned;
-
 public class Location {
-    private Spanned name;
-    private Spanned address;
-    private Integer thumbnail;
+    private int id;
+    private String name;
+    private String description;
+    private String address;
+    private int thumbnail;
+    private double lat;
+    private double lon;
 
-    public Location(Spanned name, Spanned address, Integer thumbnail) {
-        this.setName(name);
-        this.setAddress(address);
-        this.setThumbnail(thumbnail);
-    }
+    public Location() {}
 
-    public void setName(Spanned name) {
+    public Location(String name, String address, int thumbnail) {
         this.name = name;
-    }
-
-    public void setAddress(Spanned address) {
         this.address = address;
-    }
-
-    public void setThumbnail(Integer thumbnail) {
         this.thumbnail = thumbnail;
     }
 
-    public Spanned getName() {
-        return this.name;
+    public int getId() {
+        return id;
     }
 
-    public Spanned getAddress() {
-        return this.address;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Integer getThumbnail() {
-        return this.thumbnail;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(int thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

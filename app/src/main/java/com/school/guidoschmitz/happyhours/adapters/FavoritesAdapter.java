@@ -35,8 +35,8 @@ public class FavoritesAdapter extends ArrayAdapter<Location> {
         TextView address = (TextView) v.findViewById(R.id.address);
         address.setText(location.getAddress());
 
-        ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
-        thumbnail.setImageResource(location.getThumbnail());
+        //ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
+        //thumbnail.setImageResource(location.getThumbnail());
 
         return v;
     }

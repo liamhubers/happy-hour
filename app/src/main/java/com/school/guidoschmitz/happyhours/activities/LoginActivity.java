@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -54,10 +55,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private void checkForLogin(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
-            //setUserName(currentAccessToken);
-
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra(EXTRA_USERNAME, username);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
@@ -71,29 +71,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         };
     }
 
-//    private void setUserName(AccessToken accessToken) {
-//        GraphRequest.newMeRequest(accessToken,
-//            new GraphRequest.GraphJSONObjectCallback() {
-//                @Override
-//                public void onCompleted(JSONObject object, GraphResponse response) {
-//                    try {
-//                        username = object.getString("name");
-//                    }
-//                    catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }).executeAsync();
-//    }
-
     private void setLoginManager() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                //Profile profile = Profile.getCurrentProfile();
-
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                //intent.putExtra(EXTRA_USERNAME, profile.getName());
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }
 
