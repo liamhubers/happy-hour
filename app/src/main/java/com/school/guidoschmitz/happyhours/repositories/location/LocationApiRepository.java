@@ -8,6 +8,7 @@ import com.school.guidoschmitz.happyhours.models.Location;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class LocationApiRepository implements LocationRepositoryInterface {
@@ -44,7 +45,7 @@ public class LocationApiRepository implements LocationRepositoryInterface {
 
     public Location getByName(String name) {
         try {
-            String JSON = new Api().execute("http://happy-hours.guidoschmitz.nl/locations?name=" + name).get();
+            String JSON = new Api().execute("http://happy-hours.guidoschmitz.nl/locations?name=" + URLEncoder.encode(name, "UTF-8")).get();
             return parseJSON(new JSONObject(JSON));
         } catch (Exception e) {
             Log.i("API", "Couldn't fetch location with name " + name);

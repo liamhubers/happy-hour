@@ -35,6 +35,7 @@ public class Receiver extends BroadcastReceiver {
         for(Repository repository : repositories) {
             repository.setConnectivity(isOnline(context));
         }
+        context.unregisterReceiver(this);
     }
 
     public static boolean isOnline(Context context) {
