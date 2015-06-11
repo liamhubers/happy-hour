@@ -3,7 +3,7 @@ package com.school.guidoschmitz.happyhours.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,17 +14,26 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.school.guidoschmitz.happyhours.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
+    public static final String EXTRA_USERNAME = "profile";
+
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private Button loginButton;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private void checkForLogin(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra(EXTRA_USERNAME, username);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
@@ -70,13 +80,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onCancel() {
-                Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
-            }
+            public void onCancel() { }
 
             @Override
-            public void onError(FacebookException e) {
-            }
+            public void onError(FacebookException e) { }
         });
     }
 
@@ -95,5 +102,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         accessTokenTracker.stopTracking();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

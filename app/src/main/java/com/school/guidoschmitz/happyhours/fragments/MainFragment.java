@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -61,47 +60,13 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity().getBaseContext(), LocationDetailActivity.class);
+                intent.putExtra("locationTitle", marker.getTitle());
                 startActivity(intent);
                 return true;
             }
         });
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(locationManager.getBestProvider(new Criteria(), false), 5000, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        });
-        android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
-        if(location != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-        }
-        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-            private boolean set = false;
-            @Override
-            public void onMyLocationChange(android.location.Location location) {
-                if(!set) {
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-                    set = true;
-                }
-            }
-        });
+        this.setCurrentPosition();
 
         return view;
     }
@@ -128,5 +93,45 @@ public class MainFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    public void setCurrentPosition() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(locationManager.getBestProvider(new Criteria(), false), 5000, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+        android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+        if (location != null) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        }
+        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            private boolean set = false;
+
+            @Override
+            public void onMyLocationChange(android.location.Location location) {
+                if (!set) {
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    set = true;
+                }
+            }
+        });
     }
 }
