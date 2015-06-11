@@ -45,7 +45,12 @@ public class LocationCacheRepository extends CacheRepository implements Location
         return null;
     }
 
+    public void setLocations(ArrayList<Location> locations) {
+
+
     public static void setLocations(ArrayList<Location> locations) {
+        database.execSQL("DELETE FROM " + DBContract.Location.TABLE);
+
         for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(DBContract.Location._ID, locations.get(i).getId());
