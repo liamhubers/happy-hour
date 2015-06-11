@@ -8,7 +8,7 @@ import com.school.guidoschmitz.happyhours.database.DBHelper;
 /**
  * Created by Liam on 11/06/2015.
  */
-public class CacheRepository extends RepositoryInterface {
+public class CacheRepository implements RepositoryInterface {
     protected static SQLiteDatabase database;
 
     public void createDatabase(Context context) {

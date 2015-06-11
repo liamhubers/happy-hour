@@ -5,7 +5,7 @@ import com.school.guidoschmitz.happyhours.repositories.RepositoryInterface;
 
 import java.util.ArrayList;
 
-interface LocationRepositoryInterface extends RepositoryInterface {
+public interface LocationRepositoryInterface extends RepositoryInterface {
     ArrayList<Location> all();
     Location get(int id);
     Location getByName(String name);

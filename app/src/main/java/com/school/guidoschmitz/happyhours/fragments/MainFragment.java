@@ -3,11 +3,9 @@ package com.school.guidoschmitz.happyhours.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Criteria;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +18,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
-import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.LocationCacheRepository;
-import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.util.ArrayList;
 
@@ -35,10 +31,6 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
-
-        getActivity().registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        LocationRepository.cache = new LocationCacheRepository(getActivity());
-        LocationRepository.setConnectivity(true);
 
         mapView = (MapView) view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
