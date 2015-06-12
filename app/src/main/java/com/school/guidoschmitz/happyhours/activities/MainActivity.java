@@ -33,7 +33,7 @@ import com.school.guidoschmitz.happyhours.repositories.location.LocationReposito
 
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarReceiverActivity
 {
     private ArrayList<NavItem> navItems;
     private DrawerLayout drawerLayout;
@@ -62,7 +62,8 @@ public class MainActivity extends ActionBarActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.nav_list);
 
-        registerReceiver(new Receiver(this, new LocationRepository()), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        super.receiver = new Receiver(this, new LocationRepository());
+        registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Set the adapter for the list view
         drawerList.setAdapter(new NavAdapter(this, navItems));

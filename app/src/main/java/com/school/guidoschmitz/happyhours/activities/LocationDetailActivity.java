@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
-public class LocationDetailActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class LocationDetailActivity extends ActionBarReceiverActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
     private Intent referredIntent;
@@ -37,7 +38,8 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
 
         referredIntent = getIntent();
 
-        registerReceiver(new Receiver(this, new LocationRepository()), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        super.receiver = new Receiver(this, new LocationRepository());
+        registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
 
         if (toolbar != null) {
@@ -45,7 +47,7 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //this.setData();
+        this.setData();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -89,9 +91,10 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
         return false;
     }
 
-    public void toFavorites(View v) {
-        Intent i = new Intent(this, FavoriteActivity.class);
-        startActivity(i);
+    public void addFavorite(View v) {
+        //Intent i = new Intent(this, FavoriteActivity.class);
+        //startActivity(i);
+        Log.i("repo", LocationRepository.repository + "");
     }
 
     public void setData() {

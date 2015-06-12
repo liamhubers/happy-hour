@@ -47,7 +47,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Prinsegracht  14, 2512 GA Den Haag"
+                            android:text=""
                             android:id="@+id/address_text" android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
                             android:textColor="#000000"/>
@@ -55,7 +55,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="Club Seven"
+                            android:text=""
                             android:id="@+id/name_text"
                             android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" android:textColor="#000000"/>
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Favorite"
-                        android:id="@+id/favorite_button" android:onClick="toFavorites"/>
+                        android:id="@+id/favorite_button" android:onClick="addFavorite"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="10 bier voor 10,-"
+                        android:text="[[MOET NOG WAT KOMEN]]"
                         android:id="@+id/textView3" android:layout_weight="1" android:textColor="#000000"/>
             </LinearLayout>
             <LinearLayout
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Lorem ipsum beschrijving van het café komt hierin.. Test lorem ipsum hodor"
+                        android:text=""
                         android:id="@+id/description_text" android:textColor="#000000"/>
             </LinearLayout>
         </LinearLayout>

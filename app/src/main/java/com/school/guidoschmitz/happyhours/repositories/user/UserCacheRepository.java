@@ -1,4 +1,4 @@
-package com.school.guidoschmitz.happyhours.repositories.location;
+package com.school.guidoschmitz.happyhours.repositories.user;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,10 +9,15 @@ import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
 
 import java.util.ArrayList;
 
-public class LocationCacheRepository extends CacheRepository implements LocationRepositoryInterface {
+public class UserCacheRepository extends CacheRepository implements UserRepositoryInterface {
 
     @Override
-    public ArrayList<Location> all() {
+    public void addFavorite(Location location) {
+        // todo
+    }
+
+    @Override
+    public ArrayList<Location> getFavorites(int userId) {
         ArrayList<Location> locations = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE, null);
 
@@ -27,34 +32,8 @@ public class LocationCacheRepository extends CacheRepository implements Location
         return locations;
     }
 
-    @Override
-    public Location get(int id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location._ID + " = " + id, null);
-
-        if (cursor.moveToFirst()) {
-            while (cursor.isAfterLast() == false) {
-                return parseCursor(cursor);
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public Location getByName(String name) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location.NAME + " = '" + name + "'", null);
-
-        if (cursor.moveToFirst()) {
-            while (cursor.isAfterLast() == false) {
-                return parseCursor(cursor);
-            }
-        }
-
-        return null;
-    }
-
-    public static void setLocations(ArrayList<Location> locations) {
-        database.execSQL("DELETE FROM " + DBContract.Location.TABLE);
+    public static void setFavorites(ArrayList<Location> locations) {
+        /*database.execSQL("DELETE FROM " + DBContract.Location.TABLE);
 
         for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
@@ -66,18 +45,18 @@ public class LocationCacheRepository extends CacheRepository implements Location
             values.put(DBContract.Location.LON, locations.get(i).getLon());
 
             long id = database.insert(DBContract.Location.TABLE, "", values);
-        }
+        }*/
     }
 
     private Location parseCursor(Cursor cursor) {
         Location location = new Location();
 
-        location.setId(cursor.getInt(cursor.getColumnIndex(DBContract.Location._ID)));
+        /*location.setId(cursor.getInt(cursor.getColumnIndex(DBContract.Location._ID)));
         location.setName(cursor.getString(cursor.getColumnIndex(DBContract.Location.NAME)));
         location.setDescription(cursor.getString(cursor.getColumnIndex(DBContract.Location.DESCRIPTION)));
         location.setAddress(cursor.getString(cursor.getColumnIndex(DBContract.Location.ADDRESS)));
         location.setLat(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LAT)));
-        location.setLon(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LON)));
+        location.setLon(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LON)));*/
 
         return location;
     }

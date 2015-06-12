@@ -30,12 +30,12 @@ public class Receiver extends BroadcastReceiver {
         repository.cache.createDatabase(context);
         repository.setConnectivity(isOnline(context));
     }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         for(Repository repository : repositories) {
             repository.setConnectivity(isOnline(context));
         }
-        context.unregisterReceiver(this);
     }
 
     public static boolean isOnline(Context context) {

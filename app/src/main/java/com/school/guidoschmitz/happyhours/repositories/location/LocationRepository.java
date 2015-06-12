@@ -1,5 +1,7 @@
 package com.school.guidoschmitz.happyhours.repositories.location;
 
+import android.util.Log;
+
 import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.Repository;
 

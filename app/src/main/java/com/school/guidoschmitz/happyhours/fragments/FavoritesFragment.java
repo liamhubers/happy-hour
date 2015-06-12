@@ -26,7 +26,6 @@ public class FavoritesFragment extends ListFragment {
         FavoritesAdapter adapter = new FavoritesAdapter(inflater.getContext(), R.layout.activity_favorites_list_item, favorites);
         setListAdapter(adapter);
 
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
