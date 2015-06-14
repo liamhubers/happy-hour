@@ -1,6 +1,7 @@
 package com.school.guidoschmitz.happyhours.fragments;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -27,12 +28,14 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
     private MapView mapView;
     private GoogleMap map;
+    private BroadcastReceiver receiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
+        receiver = new Receiver();
 
-        getActivity().registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        getActivity().registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         LocationRepository.cache = new LocationCacheRepository(getActivity());
         LocationRepository.setConnectivity(true);
 
@@ -69,12 +72,14 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        getActivity().registerReceiver(new Receiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override

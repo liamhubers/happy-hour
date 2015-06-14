@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -60,8 +61,7 @@ public class MainActivity extends ActionBarActivity
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        setRoundImage();
-        setUsername();
+        setUserProfile();
 
         navItems = new ArrayList<>();
         navItems.add(new NavItem("Happy Hours", "", R.drawable.home));
@@ -108,19 +108,18 @@ public class MainActivity extends ActionBarActivity
 //        });
 //    }
 
-    private void setUsername() {
+    private void setUserProfile() {
         Intent intent = getIntent();
 
         TextView username = (TextView) findViewById(R.id.username);
-        username.setText("Thom Vrijmoed");
-    }
+        String extraUsername = intent.getStringExtra(LoginActivity.EXTRA_USERNAME);
+        String extraId = intent.getStringExtra(LoginActivity.EXTRA_PROFILE_ID);
 
-    private void setRoundImage() {
-        // Round the profile image
-        ImageView profileView = (ImageView) findViewById(R.id.avatar);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
-        RoundImage roundImage = new RoundImage(bitmap);
-        profileView.setImageDrawable(roundImage);
+        Log.v("LoginActivity", extraId + " | " + extraUsername);
+
+        new DownloadProfilePictureTask().execute(extraId);
+
+        username.setText(extraUsername);
     }
 
     @Override
@@ -186,5 +185,42 @@ public class MainActivity extends ActionBarActivity
                 startActivity(intent);
             }
         });
+    }
+
+    private Bitmap getFacebookPicture(String userID) {
+        Bitmap bitmap = null;
+        try {
+            URL imageUrl = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
+            bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    private void setRoundImage(Bitmap image) {
+        // Round the profile image
+        ImageView profileView = (ImageView) findViewById(R.id.avatar);
+        Bitmap bitmap = image;
+        RoundImage roundImage = new RoundImage(bitmap);
+        profileView.setImageDrawable(roundImage);
+    }
+
+    private class DownloadProfilePictureTask extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String[] params) {
+            return getFacebookPicture(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            setRoundImage(result);
+        }
     }
 }
