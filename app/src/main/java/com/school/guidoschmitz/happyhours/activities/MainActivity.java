@@ -13,9 +13,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.Receiver;
@@ -33,16 +30,11 @@ import com.school.guidoschmitz.happyhours.fragments.FavoritesFragment;
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
 import com.school.guidoschmitz.happyhours.models.NavItem;
 import com.school.guidoschmitz.happyhours.models.RoundImage;
-import com.school.guidoschmitz.happyhours.repositories.LocationCacheRepository;
-import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Set;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarReceiverActivity
 {
     private ArrayList<NavItem> navItems;
     private DrawerLayout drawerLayout;
@@ -69,6 +61,9 @@ public class MainActivity extends ActionBarActivity
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.nav_list);
+
+        super.receiver = new Receiver(this, new LocationRepository());
+        registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Set the adapter for the list view
         drawerList.setAdapter(new NavAdapter(this, navItems));

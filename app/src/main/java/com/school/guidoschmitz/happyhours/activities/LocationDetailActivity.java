@@ -1,9 +1,10 @@
 package com.school.guidoschmitz.happyhours.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.facebook.FacebookException;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -25,18 +28,29 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
+import com.school.guidoschmitz.happyhours.models.Location;
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
-public class LocationDetailActivity extends ActionBarActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class LocationDetailActivity extends ActionBarReceiverActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
     private CallbackManager callbackManager;
     private ShareDialog shareDialog;
+    private Intent referredIntent;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        referredIntent = getIntent();
+
+        super.receiver = new Receiver(this, new LocationRepository());
+        registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -46,6 +60,8 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         setShareDialogRegister();
+
+        this.setData();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -74,14 +90,14 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        LatLng latLng1 = new LatLng(52.080182, 4.316461);
+        LatLng latLng = new LatLng(location.getLat(), location.getLon());
 
         map.addMarker(new MarkerOptions()
-                .position(latLng1)
-                .title("Haagse Kluis"));
+                .position(latLng)
+                .title(location.getName()));
 
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 15));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
     @Override
@@ -129,5 +145,20 @@ public class LocationDetailActivity extends ActionBarActivity implements OnMapRe
 
             }
         });
+    public void addFavorite(View v) {
+        //Intent i = new Intent(this, FavoriteActivity.class);
+        //startActivity(i);
+        Log.i("repo", LocationRepository.repository + "");
+    }
+
+    public void setData() {
+        TextView name = (TextView) findViewById(R.id.name_text);
+        name.setText(location.getName());
+
+        TextView address = (TextView) findViewById(R.id.address_text);
+        address.setText(location.getAddress());
+
+        TextView description = (TextView) findViewById(R.id.description_text);
+        description.setText(location.getDescription());
     }
 }

@@ -1,22 +1,15 @@
-package com.school.guidoschmitz.happyhours.repositories;
+package com.school.guidoschmitz.happyhours.repositories.location;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.school.guidoschmitz.happyhours.database.DBContract;
-import com.school.guidoschmitz.happyhours.database.DBHelper;
 import com.school.guidoschmitz.happyhours.models.Location;
+import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
 
 import java.util.ArrayList;
 
-public class LocationCacheRepository implements LocationRepositoryInterface {
-    private static SQLiteDatabase database;
-
-    public LocationCacheRepository(Context context) {
-        database = new DBHelper(context).getWritableDatabase();
-    }
+public class LocationCacheRepository extends CacheRepository implements LocationRepositoryInterface {
 
     @Override
     public ArrayList<Location> all() {
@@ -47,12 +40,28 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
         return null;
     }
 
-    public void setLocations(ArrayList<Location> locations) {
+    @Override
+    public Location getByName(String name) {
+        Cursor cursor = database.rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location.NAME + " = '" + name + "'", null);
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                return parseCursor(cursor);
+            }
+        }
+
+        return null;
+    }
+
+    public static void setLocations(ArrayList<Location> locations) {
+        database.execSQL("DELETE FROM " + DBContract.Location.TABLE);
+
         for (int i = 0; i < locations.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(DBContract.Location._ID, locations.get(i).getId());
             values.put(DBContract.Location.NAME, locations.get(i).getName());
             values.put(DBContract.Location.DESCRIPTION, locations.get(i).getDescription());
+            values.put(DBContract.Location.ADDRESS, locations.get(i).getAddress());
             values.put(DBContract.Location.LAT, locations.get(i).getLat());
             values.put(DBContract.Location.LON, locations.get(i).getLon());
 
@@ -66,6 +75,7 @@ public class LocationCacheRepository implements LocationRepositoryInterface {
         location.setId(cursor.getInt(cursor.getColumnIndex(DBContract.Location._ID)));
         location.setName(cursor.getString(cursor.getColumnIndex(DBContract.Location.NAME)));
         location.setDescription(cursor.getString(cursor.getColumnIndex(DBContract.Location.DESCRIPTION)));
+        location.setAddress(cursor.getString(cursor.getColumnIndex(DBContract.Location.ADDRESS)));
         location.setLat(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LAT)));
         location.setLon(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LON)));
 

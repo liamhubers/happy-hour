@@ -2,9 +2,6 @@ package com.school.guidoschmitz.happyhours.database;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Liam Hubers on 1-6-2015.
- */
 public class DBContract {
     public static class Location implements BaseColumns {
         public static final String TABLE = "locations";
