@@ -1,6 +1,7 @@
 package com.school.guidoschmitz.happyhours.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationListener;

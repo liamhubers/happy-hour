@@ -13,6 +13,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,9 @@ import com.school.guidoschmitz.happyhours.models.NavItem;
 import com.school.guidoschmitz.happyhours.models.RoundImage;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarReceiverActivity

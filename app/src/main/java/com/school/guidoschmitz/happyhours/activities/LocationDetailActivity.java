@@ -145,6 +145,7 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
 
             }
         });
+    }
     public void addFavorite(View v) {
         //Intent i = new Intent(this, FavoriteActivity.class);
         //startActivity(i);
