@@ -1,5 +1,7 @@
 package com.school.guidoschmitz.happyhours.models;
 
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+
 public class Location {
     private int id;
     private String name;
@@ -15,6 +17,10 @@ public class Location {
         this.name = name;
         this.address = address;
         this.thumbnail = thumbnail;
+    }
+
+    public boolean isFavorite() {
+        return LocationRepository.isFavorite(this);
     }
 
     public int getId() {

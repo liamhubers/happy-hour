@@ -10,9 +10,11 @@ import android.widget.TextView;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.models.Location;
 
+import java.util.ArrayList;
+
 public class FavoritesAdapter extends ArrayAdapter<Location> {
 
-    public FavoritesAdapter(Context context, int resource, Location[] items) {
+    public FavoritesAdapter(Context context, int resource, ArrayList<Location> items) {
         super(context, resource, items);
     }
 

@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public interface LocationRepositoryInterface extends RepositoryInterface {
     ArrayList<Location> all();
+    ArrayList<Location> getFavorites();
     Location get(int id);
     Location getByName(String name);
+    void addAsFavorite(Location location);
+    void removeFavorite(Location location);
+    boolean isFavorite(Location location);
 }

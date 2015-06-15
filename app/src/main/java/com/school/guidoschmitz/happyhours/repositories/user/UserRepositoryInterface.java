@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public interface UserRepositoryInterface extends RepositoryInterface {
     void addFavorite(Location location);
+    void removeFavorite(Location location);
     ArrayList<Location> getFavorites(int userId);
 }
