@@ -8,7 +8,7 @@ public class Repository {
     public static RepositoryInterface api;
     public static CacheRepository cache;
 
-    public static void setConnectivity(boolean hasConnection) {
+    public void setConnectivity(boolean hasConnection) {
         repository = hasConnection ? api : cache;
     }
 }

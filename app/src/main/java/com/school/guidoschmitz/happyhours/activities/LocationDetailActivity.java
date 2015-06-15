@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,7 +31,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.models.Location;
+import com.school.guidoschmitz.happyhours.repositories.Repository;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.user.UserRepository;
+
+import java.util.ArrayList;
 
 public class LocationDetailActivity extends ActionBarReceiverActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -39,6 +44,8 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
     private ShareDialog shareDialog;
     private Intent referredIntent;
     private Location location;
+    private boolean isFavorite;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,12 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         super.receiver = new Receiver(this, new LocationRepository());
         registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
+        isFavorite = location.isFavorite();
+        image = (ImageView) findViewById(R.id.favorite_button_image);
+
+        if(isFavorite) {
+            image.setImageResource(R.drawable.unfavorite);
+        }
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -111,11 +124,6 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void toFavorites(View v) {
-        Intent i = new Intent(this, FavoriteActivity.class);
-        startActivity(i);
-    }
-
     public void shareLocation(View v) {
         if(shareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
@@ -149,7 +157,15 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
     public void addFavorite(View v) {
         //Intent i = new Intent(this, FavoriteActivity.class);
         //startActivity(i);
-        Log.i("repo", LocationRepository.repository + "");
+        if(isFavorite) {
+            LocationRepository.removeFavorite(location);
+            isFavorite = false;
+            image.setImageResource(R.drawable.favorite);
+        } else {
+            LocationRepository.addAsFavorite(location);
+            isFavorite = true;
+            image.setImageResource(R.drawable.unfavorite);
+        }
     }
 
     public void setData() {

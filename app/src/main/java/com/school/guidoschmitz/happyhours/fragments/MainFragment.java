@@ -112,7 +112,7 @@ public class MainFragment extends Fragment {
         });
         android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
         if (location != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
         }
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             private boolean set = false;
@@ -120,7 +120,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onMyLocationChange(android.location.Location location) {
                 if (!set) {
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
                     set = true;
                 }
             }
