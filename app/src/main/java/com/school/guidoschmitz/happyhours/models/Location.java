@@ -1,19 +1,26 @@
 package com.school.guidoschmitz.happyhours.models;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+
+import java.net.URL;
 
 public class Location {
     private int id;
     private String name;
     private String description;
     private String address;
-    private int thumbnail;
+    private Bitmap thumbnail;
+    private String thumbnailString;
     private double lat;
     private double lon;
 
     public Location() {}
 
-    public Location(String name, String address, int thumbnail) {
+    public Location(String name, String address, Bitmap thumbnail) {
         this.name = name;
         this.address = address;
         this.thumbnail = thumbnail;
@@ -63,12 +70,24 @@ public class Location {
         this.name = name;
     }
 
-    public int getThumbnail() {
+    public Bitmap getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnailString = thumbnail;
+        try {
+            Log.i("thumbnail", "download: "+thumbnail);
+            URL url = new URL(thumbnail);
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            this.thumbnail = bmp;
+        } catch(Exception e) {
+
+        }
+    }
+
+    public String getThumbnailString() {
+        return this.thumbnailString;
     }
 
     public String getAddress() {

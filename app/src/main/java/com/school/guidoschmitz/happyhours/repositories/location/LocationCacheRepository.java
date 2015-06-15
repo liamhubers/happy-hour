@@ -108,6 +108,7 @@ public class LocationCacheRepository extends CacheRepository implements Location
             values.put(DBContract.Location.NAME, locations.get(i).getName());
             values.put(DBContract.Location.DESCRIPTION, locations.get(i).getDescription());
             values.put(DBContract.Location.ADDRESS, locations.get(i).getAddress());
+            values.put(DBContract.Location.THUMBNAIL, locations.get(i).getThumbnailString());
             values.put(DBContract.Location.LAT, locations.get(i).getLat());
             values.put(DBContract.Location.LON, locations.get(i).getLon());
 
