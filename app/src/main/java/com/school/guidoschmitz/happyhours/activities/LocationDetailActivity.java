@@ -3,6 +3,7 @@ package com.school.guidoschmitz.happyhours.activities;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +40,8 @@ import java.util.ArrayList;
 public class LocationDetailActivity extends ActionBarReceiverActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
+    private CallbackManager callbackManager;
+    private ShareDialog shareDialog;
     private Intent referredIntent;
     private Location location;
     private boolean isFavorite;
@@ -59,6 +69,10 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        setShareDialogRegister();
 
         this.setData();
 
@@ -104,6 +118,47 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void toFavorites(View v) {
+        Intent i = new Intent(this, FavoriteActivity.class);
+        startActivity(i);
+    }
+
+    public void shareLocation(View v) {
+        if(shareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Hello Facebook")
+                    .setContentDescription(
+                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .build();
+            shareDialog.show(linkContent);
+        }
+    }
+
+    private void setShareDialogRegister() {
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.v("LoginActivity", result.toString());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
+    }
     public void addFavorite(View v) {
         //Intent i = new Intent(this, FavoriteActivity.class);
         //startActivity(i);

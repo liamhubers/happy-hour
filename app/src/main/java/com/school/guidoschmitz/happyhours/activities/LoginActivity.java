@@ -34,7 +34,8 @@ import java.util.Arrays;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
 
-    public static final String EXTRA_USERNAME = "profile";
+    public static final String EXTRA_USERNAME = "name";
+    public static final String EXTRA_PROFILE_ID = "id";
 
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
@@ -78,10 +79,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private void checkForLogin(AccessToken currentAccessToken) {
         if (currentAccessToken != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra(EXTRA_USERNAME, username);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            setUsername(currentAccessToken);
         }
     }
 
@@ -94,14 +92,38 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         };
     }
 
+    private void setUsername(AccessToken accessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(
+            accessToken,
+            new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(JSONObject object, GraphResponse response) {
+                    try {
+                        Log.v("LoginActivity", response.toString());
+                        username = object.getString("name");
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra(EXTRA_USERNAME, username);
+                        intent.putExtra(EXTRA_PROFILE_ID, object.getString("id"));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                    catch (Exception e) {
+                        Log.d("Request", e.getMessage());
+                    }
+                }
+            });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id, name");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
     private void setLoginManager() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                loginResult.getAccessToken().getUserId();
-
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
+                setUsername(loginResult.getAccessToken());
             }
 
             @Override
@@ -111,6 +133,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onError(FacebookException e) { }
         });
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
