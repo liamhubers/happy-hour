@@ -124,11 +124,6 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void toFavorites(View v) {
-        Intent i = new Intent(this, FavoriteActivity.class);
-        startActivity(i);
-    }
-
     public void shareLocation(View v) {
         if(shareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
