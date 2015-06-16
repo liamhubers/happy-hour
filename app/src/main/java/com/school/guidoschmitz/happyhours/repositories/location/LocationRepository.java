@@ -56,6 +56,7 @@ public class LocationRepository extends Repository {
             location.setAddress(object.getString("address"));
             location.setLat(object.getDouble("lat"));
             location.setLon(object.getDouble("lon"));
+            location.setThumbnail(object.getString("thumbnail"));
         } catch (Exception e) {
             Log.i("JSON", "Failed to parse object to location");
         }
@@ -72,6 +73,7 @@ public class LocationRepository extends Repository {
         location.setAddress(cursor.getString(cursor.getColumnIndex(DBContract.Location.ADDRESS)));
         location.setLat(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LAT)));
         location.setLon(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LON)));
+        location.setThumbnail(cursor.getString(cursor.getColumnIndex(DBContract.Location.THUMBNAIL)));
 
         return location;
     }

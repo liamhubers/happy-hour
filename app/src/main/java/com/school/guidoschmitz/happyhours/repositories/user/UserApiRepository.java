@@ -42,9 +42,9 @@ public class UserApiRepository implements UserRepositoryInterface {
         }
 
         UserCacheRepository.setFavorites(locations);
-        locations.add(new Location(Html.fromHtml("Club Seven").toString(), Html.fromHtml("Prinsegracht 14, 2512 GA Den Haag").toString(), R.drawable.bar1));
+        /*locations.add(new Location(Html.fromHtml("Club Seven").toString(), Html.fromHtml("Prinsegracht 14, 2512 GA Den Haag").toString(), R.drawable.bar1));
         locations.add(new Location(Html.fromHtml("Caf&eacute; Beurs").toString(), Html.fromHtml("Kruiskade 55, 3012 EE Rotterdam").toString(), R.drawable.bar2));
-        locations.add(new Location(Html.fromHtml("De Drie Musketiers").toString(), Html.fromHtml("Dorpsstraat 27, Nootdorp").toString(), R.drawable.bar3));
+        locations.add(new Location(Html.fromHtml("De Drie Musketiers").toString(), Html.fromHtml("Dorpsstraat 27, Nootdorp").toString(), R.drawable.bar3));*/
 
         return locations;
     }

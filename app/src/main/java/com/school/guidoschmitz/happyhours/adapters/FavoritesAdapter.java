@@ -1,6 +1,7 @@
 package com.school.guidoschmitz.happyhours.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,9 @@ public class FavoritesAdapter extends ArrayAdapter<Location> {
         TextView address = (TextView) v.findViewById(R.id.address);
         address.setText(location.getAddress());
 
-        //ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
-        //thumbnail.setImageResource(location.getThumbnail());
+        ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
+        Log.i("thumbnail", location.getThumbnail()+"");
+        thumbnail.setImageBitmap(location.getThumbnail());
 
         return v;
     }
