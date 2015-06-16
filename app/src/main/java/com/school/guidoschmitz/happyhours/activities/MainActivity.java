@@ -93,19 +93,7 @@ public class MainActivity extends ActionBarReceiverActivity
 
         placeStartFragment();
         setLogoutListener();
-        //setClickSettings();
     }
-
-//    private void setClickSettings() {
-//        ImageView settings = (ImageView)findViewById(R.id.settings);
-//        settings.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
 
     private void setUserProfile() {
         Intent intent = getIntent();
