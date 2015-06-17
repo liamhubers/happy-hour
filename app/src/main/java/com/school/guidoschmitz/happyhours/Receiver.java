@@ -1,47 +1,60 @@
 package com.school.guidoschmitz.happyhours;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.school.guidoschmitz.happyhours.repositories.Repository;
+import com.school.guidoschmitz.happyhours.fragments.MainFragment;
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.util.ArrayList;
 
 
 public class Receiver extends BroadcastReceiver {
-    ArrayList<Repository> repositories;
 
-    public Receiver(Context context, ArrayList<Repository> repositories) {
-        this.repositories = repositories;
+    private MainFragment fragment;
+    private Activity activity;
 
-        for(Repository repository : repositories) {
-            repository.cache.createDatabase(context);
-            repository.setConnectivity(isOnline(context));
+    public Receiver(MainFragment fragment) {
+        this.fragment = fragment;
+        this.activity = fragment.getActivity();
+
+        LocationRepository.createDatabase(this.activity);
+        if(isOnline(this.activity)) {
+            this.handler();
+            try {
+                this.activity.unregisterReceiver(this);
+            } catch(Exception e) {
+                // not registered
+            }
+        } else {
+            this.activity.registerReceiver(this, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
-    }
-
-    public Receiver(Context context, Repository repository) {
-        this.repositories = new ArrayList<>();
-        this.repositories.add(repository);
-
-        repository.cache.createDatabase(context);
-        repository.setConnectivity(isOnline(context));
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        for(Repository repository : repositories) {
-            repository.setConnectivity(isOnline(context));
+        if(this.isOnline(context)) {
+            handler();
+            context.unregisterReceiver(this);
         }
     }
 
+    private void handler() {
+        Log.i("hander", "online!");
+        new LocationRepository().onOnline(this.fragment);
+    }
+
     public static boolean isOnline(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return (netInfo != null && netInfo.isConnected());
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network = manager.getActiveNetworkInfo();
+        return (network != null && network.isConnected());
     }
 }

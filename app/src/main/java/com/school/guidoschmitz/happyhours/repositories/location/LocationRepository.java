@@ -1,52 +1,42 @@
 package com.school.guidoschmitz.happyhours.repositories.location;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
-
+import com.school.guidoschmitz.happyhours.LocationApi;
 import com.school.guidoschmitz.happyhours.database.DBContract;
+import com.school.guidoschmitz.happyhours.fragments.MainFragment;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.Repository;
-
+import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-public class LocationRepository extends Repository {
+public class LocationRepository extends CacheRepository {
 
-    public LocationRepository() {
-        api = new LocationApiRepository();
-        cache = new LocationCacheRepository();
+    public void onOnline(MainFragment fragment) {
+        new LocationApi(this, fragment).execute();
     }
 
     public static ArrayList<Location> all() {
-        return ((LocationRepositoryInterface)repository).all();
+        ArrayList<Location> locations = new ArrayList<>();
+        Cursor cursor = getDatabase().rawQuery("SELECT * FROM " + DBContract.Location.TABLE, null);
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                locations.add(LocationRepository.toLocation(cursor));
+
+                cursor.moveToNext();
+            }
+        }
+
+        return locations;
     }
 
-    public static Location get(int id) {
-        return ((LocationRepositoryInterface)repository).get(id);
+    public static void save(Location location) {
+        getDatabase().insert(DBContract.Location.TABLE, "", toContentValues(location));
     }
 
-    public static Location getByName(String name) {
-        return ((LocationRepositoryInterface)repository).getByName(name);
-    }
-
-    public static void addAsFavorite(Location location) {
-        ((LocationRepositoryInterface)repository).addAsFavorite(location);
-    }
-
-    public static void removeFavorite(Location location) {
-        ((LocationRepositoryInterface)repository).removeFavorite(location);
-    }
-
-    public static ArrayList<Location> getFavorites() {
-        return ((LocationRepositoryInterface)repository).getFavorites();
-    }
-
-    public static boolean isFavorite(Location location) {
-        return ((LocationRepositoryInterface)repository).isFavorite(location);
-    }
-
-    public static Location parseJSON(JSONObject object) {
+    public static Location toLocation(JSONObject object) {
         Location location = new Location();
 
         try {
@@ -63,8 +53,7 @@ public class LocationRepository extends Repository {
 
         return location;
     }
-
-    public static Location parseCursor(Cursor cursor) {
+    public static Location toLocation(Cursor cursor) {
         Location location = new Location();
 
         location.setId(cursor.getInt(cursor.getColumnIndex(DBContract.Location._ID)));
@@ -76,5 +65,31 @@ public class LocationRepository extends Repository {
         location.setThumbnail(cursor.getString(cursor.getColumnIndex(DBContract.Location.THUMBNAIL)));
 
         return location;
+    }
+
+    public static ContentValues toContentValues(Location location) {
+        ContentValues values = new ContentValues();
+
+        values.put(DBContract.Location._ID, location.getId());
+        values.put(DBContract.Location.NAME, location.getName());
+        values.put(DBContract.Location.DESCRIPTION, location.getDescription());
+        values.put(DBContract.Location.ADDRESS, location.getAddress());
+        values.put(DBContract.Location.THUMBNAIL, location.getThumbnail());
+        values.put(DBContract.Location.LAT, location.getLat());
+        values.put(DBContract.Location.LON, location.getLon());
+
+        return values;
+    }
+
+    public static boolean isFavorite(Location location) {
+        Cursor cursor = getDatabase().rawQuery("SELECT "+DBContract.Favorite._ID+" FROM favorites WHERE " + DBContract.Favorite.LOCATION_ID + " = " + location.getId(), null);
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

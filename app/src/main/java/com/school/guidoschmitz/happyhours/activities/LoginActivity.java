@@ -2,9 +2,11 @@ package com.school.guidoschmitz.happyhours.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +35,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends Activity {
 
     public static final String EXTRA_USERNAME = "name";
     public static final String EXTRA_PROFILE_ID = "id";
@@ -56,10 +59,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.activity_login);
 
-        getHash();
+        //getHash();
 
-        loginButton = (Button) findViewById(R.id.login_button);
-        loginButton.setOnClickListener(this);
+        //loginButton = (Button) findViewById(R.id.login_button);
+        //loginButton.setOnClickListener(this);
     }
 
     private void getHash() {
@@ -127,10 +130,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onCancel() { }
+            public void onCancel() {
+            }
 
             @Override
-            public void onError(FacebookException e) { }
+            public void onError(FacebookException e) {
+            }
         });
     }
 
@@ -142,9 +147,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onClick(View v) {
+    public void loginWithFacebook(View v) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+    }
+
+    public void loginWithoutFacebook(View v) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override

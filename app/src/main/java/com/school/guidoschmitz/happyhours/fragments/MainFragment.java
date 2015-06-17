@@ -18,15 +18,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class MainFragment extends Fragment {
-    private MapView mapView;
+public class MainFragment extends MapViewFragment {
+
     private GoogleMap map;
+    private HashMap<Marker, Location> markerLocations = new HashMap<>();
+    private static final int ZOOM_LEVEL = 10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,88 +43,54 @@ public class MainFragment extends Fragment {
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setMyLocationEnabled(true);
 
-        ArrayList<Location> locations = LocationRepository.all();
-
-        for (Location location : locations) {
-            LatLng latLng = new LatLng(location.getLat(), location.getLon());
-            map.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(location.getName()));
-        }
-
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity().getBaseContext(), LocationDetailActivity.class);
-                intent.putExtra("locationTitle", marker.getTitle());
+                intent.putExtra("location", markerLocations.get(marker));
                 startActivity(intent);
+
                 return true;
             }
         });
 
+        new Receiver(this);
+        this.setData();
         this.setCurrentPosition();
 
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
+    public void setData() {
+        ArrayList<Location> locations = LocationRepository.all();
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
+        map.clear();
+        for (Location location : locations) {
+            LatLng latLng = new LatLng(location.getLat(), location.getLon());
+            Marker marker = map.addMarker(
+                new MarkerOptions()
+                    .position(latLng)
+                    .title(location.getName())
+            );
+            markerLocations.put(marker, location);
+        }
     }
 
     public void setCurrentPosition() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(locationManager.getBestProvider(new Criteria(), false), 5000, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(android.location.Location location) {
 
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        });
         android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
         if (location != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL));
         }
+
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             private boolean set = false;
 
             @Override
             public void onMyLocationChange(android.location.Location location) {
                 if (!set) {
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL));
                     set = true;
                 }
             }
