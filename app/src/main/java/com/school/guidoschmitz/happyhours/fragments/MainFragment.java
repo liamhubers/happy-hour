@@ -134,7 +134,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onMyLocationChange(android.location.Location location) {
                 if (!set) {
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
                     set = true;
                 }
             }

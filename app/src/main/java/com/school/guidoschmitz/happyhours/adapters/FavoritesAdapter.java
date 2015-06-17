@@ -1,6 +1,7 @@
 package com.school.guidoschmitz.happyhours.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.models.Location;
 
+import java.util.ArrayList;
+
 public class FavoritesAdapter extends ArrayAdapter<Location> {
 
-    public FavoritesAdapter(Context context, int resource, Location[] items) {
+    public FavoritesAdapter(Context context, int resource, ArrayList<Location> items) {
         super(context, resource, items);
     }
 
@@ -35,8 +38,9 @@ public class FavoritesAdapter extends ArrayAdapter<Location> {
         TextView address = (TextView) v.findViewById(R.id.address);
         address.setText(location.getAddress());
 
-        //ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
-        //thumbnail.setImageResource(location.getThumbnail());
+        ImageView thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
+        Log.i("thumbnail", location.getThumbnail()+"");
+        thumbnail.setImageBitmap(location.getThumbnail());
 
         return v;
     }

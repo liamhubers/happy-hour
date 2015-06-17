@@ -12,6 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ImageView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,13 +32,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.models.Location;
+import com.school.guidoschmitz.happyhours.repositories.Repository;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.user.UserRepository;
+
+import java.util.ArrayList;
 
 public class LocationDetailActivity extends ActionBarReceiverActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
+    private CallbackManager callbackManager;
+    private ShareDialog shareDialog;
     private Intent referredIntent;
     private Location location;
+    private boolean isFavorite;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +59,21 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         super.receiver = new Receiver(this, new LocationRepository());
         registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         location = LocationRepository.getByName(referredIntent.getStringExtra("locationTitle"));
+        isFavorite = location.isFavorite();
+        image = (ImageView) findViewById(R.id.favorite_button_image);
+
+        if(isFavorite) {
+            image.setImageResource(R.drawable.unfavorite);
+        }
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        setShareDialogRegister();
 
         this.setData();
 
@@ -93,10 +119,54 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void shareLocation(View v) {
+        if(shareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Hello Facebook")
+                    .setContentDescription(
+                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .build();
+            shareDialog.show(linkContent);
+        }
+    }
+
+    private void setShareDialogRegister() {
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.v("LoginActivity", result.toString());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
+    }
     public void addFavorite(View v) {
         //Intent i = new Intent(this, FavoriteActivity.class);
         //startActivity(i);
-        Log.i("repo", LocationRepository.repository + "");
+        if(isFavorite) {
+            LocationRepository.removeFavorite(location);
+            isFavorite = false;
+            image.setImageResource(R.drawable.favorite);
+        } else {
+            LocationRepository.addAsFavorite(location);
+            isFavorite = true;
+            image.setImageResource(R.drawable.unfavorite);
+        }
     }
 
     public void setData() {
