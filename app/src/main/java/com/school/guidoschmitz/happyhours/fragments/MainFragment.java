@@ -11,18 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
+import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainFragment extends Fragment {
     private MapView mapView;
