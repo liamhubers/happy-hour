@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
     private MapView mapView;
     private GoogleMap map;
+    private LatLngBounds bounds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,13 +43,23 @@ public class MainFragment extends Fragment {
         map.setMyLocationEnabled(true);
 
         ArrayList<Location> locations = LocationRepository.all();
+        ArrayList<Marker> markers = new ArrayList<>();
 
         for (Location location : locations) {
             LatLng latLng = new LatLng(location.getLat(), location.getLon());
-            map.addMarker(new MarkerOptions()
+            Marker marker = map.addMarker(new MarkerOptions()
                     .position(latLng)
                     .title(location.getName()));
+
+            markers.add(marker);
         }
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+
+        bounds = builder.build();
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -112,7 +125,8 @@ public class MainFragment extends Fragment {
         });
         android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
         if (location != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+            map.moveCamera(cu);
         }
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             private boolean set = false;

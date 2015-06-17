@@ -3,6 +3,7 @@ package com.school.guidoschmitz.happyhours.repositories.location;
 import android.util.Log;
 
 import com.school.guidoschmitz.happyhours.Api;
+import com.school.guidoschmitz.happyhours.models.Event;
 import com.school.guidoschmitz.happyhours.models.Location;
 
 import org.json.JSONArray;
@@ -64,6 +65,20 @@ public class LocationApiRepository implements LocationRepositoryInterface {
             location.setAddress(object.getString("address"));
             location.setLat(object.getDouble("lat"));
             location.setLon(object.getDouble("lon"));
+
+            ArrayList<Event> eventModels = new ArrayList<>();
+            JSONArray events = object.getJSONArray("events");
+            for (int i = 0; i < events.length(); i++) {
+                JSONObject event = events.getJSONObject(i);
+                Event model = new Event();
+                model.setDayOfWeek(event.getInt("day_of_week"));
+                model.setDescription(event.getString("description"));
+                model.setStartTime(event.getString("start_time"));
+                model.setEndTime(event.getString("end_time"));
+                eventModels.add(model);
+            }
+
+            location.setEvents(eventModels);
         } catch (Exception e) {
             Log.i("JSON", "Failed to parse object to location");
         }

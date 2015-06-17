@@ -79,13 +79,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Actie van vandaag"
+                        android:text="Acties"
                         android:id="@+id/textView2" android:textColor="#ff39e1ff"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent" android:id="@+id/actions_layout">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

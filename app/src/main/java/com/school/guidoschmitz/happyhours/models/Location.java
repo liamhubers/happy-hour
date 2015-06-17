@@ -1,5 +1,7 @@
 package com.school.guidoschmitz.happyhours.models;
 
+import java.util.ArrayList;
+
 public class Location {
     private int id;
     private String name;
@@ -8,8 +10,10 @@ public class Location {
     private int thumbnail;
     private double lat;
     private double lon;
+    private ArrayList<Event> events;
 
-    public Location() {}
+    public Location() {
+    }
 
     public Location(String name, String address, int thumbnail) {
         this.name = name;
@@ -71,5 +75,13 @@ public class Location {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
     }
 }

@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,5 +108,10 @@ public class LocationDetailActivity extends ActionBarReceiverActivity implements
 
         TextView description = (TextView) findViewById(R.id.description_text);
         description.setText(location.getDescription());
+
+        LinearLayout actionLayout = (LinearLayout) findViewById(R.id.actions_layout);
+        TextView actionText = new TextView(this);
+        actionText.setText("Test");
+        actionLayout.addView(actionText);
     }
 }
