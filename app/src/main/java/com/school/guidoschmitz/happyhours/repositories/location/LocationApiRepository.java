@@ -61,45 +61,19 @@ public class LocationApiRepository implements LocationRepositoryInterface {
         ((LocationRepositoryInterface)LocationRepository.cache).addAsFavorite(location);
     }
 
-        try {
-            location.setId(object.getInt("id"));
-            location.setName(object.getString("name"));
-            location.setDescription(object.getString("description"));
-            location.setAddress(object.getString("address"));
-            location.setLat(object.getDouble("lat"));
-            location.setLon(object.getDouble("lon"));
 
-            ArrayList<Event> eventModels = new ArrayList<>();
-            JSONArray events = object.getJSONArray("events");
-            for (int i = 0; i < events.length(); i++) {
-                JSONObject event = events.getJSONObject(i);
-                Event model = new Event();
-                model.setDayOfWeek(event.getInt("day_of_week"));
-                model.setDescription(event.getString("description"));
-                model.setStartTime(event.getString("start_time"));
-                model.setEndTime(event.getString("end_time"));
-                eventModels.add(model);
-            }
-
-            location.setEvents(eventModels);
-        } catch (Exception e) {
-            Log.i("JSON", "Failed to parse object to location");
-        }
     @Override
     public void removeFavorite(Location location) {
-        // todo
         ((LocationRepositoryInterface)LocationRepository.cache).removeFavorite(location);
     }
 
     @Override
     public boolean isFavorite(Location location) {
-        // todo
         return ((LocationRepositoryInterface)LocationRepository.cache).isFavorite(location);
     }
 
     @Override
     public ArrayList<Location> getFavorites() {
-        // todo
         return ((LocationRepositoryInterface)LocationRepository.cache).getFavorites();
     }
 }
