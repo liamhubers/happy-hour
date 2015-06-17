@@ -35,10 +35,6 @@
             android:label="@string/detail_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.FavoriteActivity"
-            android:label="@string/favorites_name"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.FavoritesListItemActivity"
             android:label="@string/title_activity_favorites_list_item"
             android:screenOrientation="portrait" />

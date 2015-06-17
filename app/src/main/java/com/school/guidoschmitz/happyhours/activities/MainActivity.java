@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,20 +26,18 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.school.guidoschmitz.happyhours.R;
-import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.adapters.NavAdapter;
 import com.school.guidoschmitz.happyhours.fragments.FavoritesFragment;
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
 import com.school.guidoschmitz.happyhours.models.NavItem;
 import com.school.guidoschmitz.happyhours.models.RoundImage;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarReceiverActivity
+public class MainActivity extends ActionBarActivity
 {
     private ArrayList<NavItem> navItems;
     private DrawerLayout drawerLayout;
@@ -65,9 +64,6 @@ public class MainActivity extends ActionBarReceiverActivity
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.nav_list);
-
-        super.receiver = new Receiver(this, new LocationRepository());
-        registerReceiver(super.receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // Set the adapter for the list view
         drawerList.setAdapter(new NavAdapter(this, navItems));
@@ -101,10 +97,12 @@ public class MainActivity extends ActionBarReceiverActivity
         TextView username = (TextView) findViewById(R.id.username);
         String extraUsername = intent.getStringExtra(LoginActivity.EXTRA_USERNAME);
         String extraId = intent.getStringExtra(LoginActivity.EXTRA_PROFILE_ID);
-
-        Log.v("LoginActivity", extraId + " | " + extraUsername);
-
-        new DownloadProfilePictureTask().execute(extraId);
+        if(extraId != null) {
+            new DownloadProfilePictureTask().execute(extraId);
+        } else {
+            extraUsername = "Ingelogd als gast";
+            setRoundImage(BitmapFactory.decodeResource(getResources(), R.drawable.profile_thumbnail));
+        }
 
         username.setText(extraUsername);
     }
@@ -191,14 +189,17 @@ public class MainActivity extends ActionBarReceiverActivity
 
     private void setRoundImage(Bitmap image) {
         // Round the profile image
-        ImageView profileView = (ImageView) findViewById(R.id.avatar);
-        Bitmap bitmap = image;
-        RoundImage roundImage = new RoundImage(bitmap);
-        profileView.setImageDrawable(roundImage);
+        try {
+            ImageView profileView = (ImageView) findViewById(R.id.avatar);
+            Bitmap bitmap = image;
+            RoundImage roundImage = new RoundImage(bitmap);
+            profileView.setImageDrawable(roundImage);
+        } catch(Exception e) {
+            Log.e("", "Couldn't get image");
+        }
     }
 
     private class DownloadProfilePictureTask extends AsyncTask<String, Void, Bitmap> {
-
         @Override
         protected Bitmap doInBackground(String[] params) {
             return getFacebookPicture(params[0]);

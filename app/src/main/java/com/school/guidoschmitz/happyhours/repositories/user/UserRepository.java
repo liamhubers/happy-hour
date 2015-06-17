@@ -1,23 +1,42 @@
 package com.school.guidoschmitz.happyhours.repositories.user;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
+
+import com.school.guidoschmitz.happyhours.database.DBContract;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.Repository;
+import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
+import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 import java.util.ArrayList;
 
-public class UserRepository extends Repository {
+public class UserRepository extends CacheRepository {
 
-    public UserRepository() {
-        super.api = new UserApiRepository();
-        super.cache = new UserCacheRepository();
+    public static void addFavorite(Location location) {
+        ContentValues values = new ContentValues();
+        values.put(DBContract.Favorite.LOCATION_ID, location.getId());
+
+        getDatabase().insert(DBContract.Favorite.TABLE, "", values);
+    }
+
+    public static void removeFavorite(Location location) {
+        getDatabase().delete(DBContract.Favorite.TABLE, DBContract.Favorite.LOCATION_ID + " = " + location.getId(), null);
     }
 
     public static ArrayList<Location> getFavorites() {
-        int userId = 1;
-        return ((UserRepositoryInterface)repository).getFavorites(userId);
-    }
+        ArrayList<Location> locations = new ArrayList<>();
 
-    public static void addFavorite(Location location) {
-        ((UserRepositoryInterface)repository).addFavorite(location);
+        Cursor cursor = getDatabase().rawQuery("SELECT * FROM " + DBContract.Location.TABLE + " WHERE " + DBContract.Location._ID + " IN (SELECT " + DBContract.Favorite.LOCATION_ID + " FROM " + DBContract.Favorite.TABLE + ")", null);
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                locations.add(LocationRepository.toLocation(cursor));
+
+                cursor.moveToNext();
+            }
+        }
+
+        return locations;
     }
 }

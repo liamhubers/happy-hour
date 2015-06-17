@@ -4,131 +4,83 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:background="#28000000">
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"/>
-    </LinearLayout>
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true" android:background="#F6F6F6">
-
-        <fragment android:layout_width="match_parent"
-                  android:layout_height="200dip"
-                  android:name="com.google.android.gms.maps.MapFragment" android:id="@+id/map"
-                  android:layout_below="@+id/linearLayout2" android:layout_alignParentLeft="true"
-                  android:layout_alignParentStart="true"/>
         <LinearLayout
-                android:orientation="vertical"
-                android:weightSum="2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_below="@+id/map"
-                android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-                android:paddingLeft="10dip" android:paddingRight="10dip">
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_below="@+id/map"
-                    android:layout_centerHorizontal="true" android:id="@+id/linearLayout" android:layout_marginTop="10dip"
-                    android:layout_marginBottom="10dip">
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:layout_weight="1">
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text=""
-                            android:id="@+id/address_text" android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-                            android:textColor="#000000"/>
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text=""
-                            android:id="@+id/name_text"
-                            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true" android:textColor="#000000"/>
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/favorite_button_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/favorite"
-                    android:onClick="addFavorite"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" android:id="@+id/linearLayout2"
-                    android:layout_alignParentStart="false" android:layout_alignParentBottom="false"
-                    android:layout_marginTop="10dip" android:layout_marginBottom="5dip"
-                    >
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Actie van vandaag"
-                        android:id="@+id/textView2" android:textColor="#ff39e1ff"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="2 bier voor de prijs van 1"
-                        android:id="@+id/textView3" android:layout_weight="1" android:textColor="#000000"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-                    android:layout_marginTop="20dip">
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Omschrijving"
-                        android:id="@+id/description_title" android:layout_marginBottom="5dip" android:textColor="#ff39e1ff"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text=""
-                        android:id="@+id/description_text" android:textColor="#000000"/>
-            </LinearLayout>
-            <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <Button
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.Toolbar
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/colorPrimary"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        android:orientation="vertical">
+        <fragment android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:id="@+id/map"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
+            android:padding="20dp">
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:layout_gravity="left">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Actie van vandaag"
+                    android:id="@+id/textView2"
+                    android:textColor="#ff39e1ff"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="2 bier voor de prijs van 1"
+                    android:id="@+id/textView3"
+                    android:layout_weight="1"
+                    android:textColor="#fff"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <Button
+                    android:id="@+id/share_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Share"
-                    android:onClick="shareLocation" />
+                    android:onClick="shareLocation"/>
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingLeft="10dip" android:paddingRight="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="asd"
+                android:id="@+id/description_text"
+                android:textColor="#000000"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Adres"
+                android:textColor="#000000"
+                android:id="@+id/address_text"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
