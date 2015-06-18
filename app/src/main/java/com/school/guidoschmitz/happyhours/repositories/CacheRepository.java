@@ -2,6 +2,7 @@ package com.school.guidoschmitz.happyhours.repositories;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.school.guidoschmitz.happyhours.database.DBHelper;
 
@@ -12,6 +13,7 @@ public class CacheRepository {
     private static SQLiteDatabase database;
 
     public static void createDatabase(Context context) {
+        Log.i("created", "ba");
         database = new DBHelper(context).getWritableDatabase();
     }
 

@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.school.guidoschmitz.happyhours.database.DBContract;
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -63,6 +63,7 @@ public class LocationApi extends AsyncTask<String, String, String> {
             JSONArray array = new JSONArray(JSON);
 
             repository.getDatabase().execSQL("DELETE FROM " + DBContract.Location.TABLE);
+            repository.getDatabase().execSQL("DELETE FROM " + DBContract.Event.TABLE);
 
             for (int i = 0; i < array.length(); i++) {
                 repository.save(repository.toLocation(new JSONObject(array.get(i).toString())));

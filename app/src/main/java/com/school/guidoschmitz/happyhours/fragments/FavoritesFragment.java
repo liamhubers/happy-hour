@@ -14,8 +14,7 @@ import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.adapters.FavoritesAdapter;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
-import com.school.guidoschmitz.happyhours.repositories.user.UserRepository;
+import com.school.guidoschmitz.happyhours.repositories.UserRepository;
 
 import java.util.ArrayList;
 

@@ -1,13 +1,8 @@
 package com.school.guidoschmitz.happyhours.models;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
-
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import java.util.ArrayList;
 
 import java.io.Serializable;
-import java.net.URL;
 
 public class Location implements Serializable {
     private int id;
@@ -17,6 +12,7 @@ public class Location implements Serializable {
     private String thumbnail;
     private double lat;
     private double lon;
+    private ArrayList<Event> events;
     private boolean favorite;
 
     public int getId() {
@@ -55,9 +51,7 @@ public class Location implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public String getThumbnail() {
         return thumbnail;
@@ -81,5 +75,13 @@ public class Location implements Serializable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
     }
 }

@@ -26,7 +26,6 @@ public class FavoritesAdapter extends ArrayAdapter<Location> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
