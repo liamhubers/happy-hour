@@ -2,6 +2,9 @@ package com.school.guidoschmitz.happyhours.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ImageView;
 
 import com.facebook.AccessToken;
