@@ -36,6 +36,8 @@ public class thumbnailDownloader extends AsyncTask<String, String, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bmp) {
-        thumbnail.setImageDrawable(new RoundImage(bmp));
+        if(bmp != null) {
+            thumbnail.setImageDrawable(new RoundImage(bmp));
+        }
     }
 }

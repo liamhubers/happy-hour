@@ -38,6 +38,9 @@ import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 import com.school.guidoschmitz.happyhours.repositories.UserRepository;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class LocationDetailActivity extends LocationDetailExtendActivity {
 
     private GoogleMap map;
@@ -45,11 +48,9 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
     private static final int ZOOM_LEVEL = 14;
     private boolean favorite = false;
 
-    private static String FACEBOOK_SHARE_TITLE = "Hello Facebook";
-    private static String FACEBOOK_SHARE_DESCRIPTION = "test";
-    private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://developers.facebook.com/android");
-
-    private static final String[] days = new String[]{ "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag" };
+    private static String FACEBOOK_SHARE_TITLE = "Happy Hours";
+    private static String FACEBOOK_SHARE_DESCRIPTION = "Get the most booz out of your night";
+    private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://happy-hours.com/");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,15 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         referredIntent = getIntent();
         location = (Location) referredIntent.getSerializableExtra("location");
         location.setFavorite(LocationRepository.isFavorite(location));
+
+        int dayOfWeek = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
+        for(Event event : location.getEvents()) {
+            if(event.getDayOfWeek() == dayOfWeek) {
+                FACEBOOK_SHARE_TITLE = FACEBOOK_SHARE_TITLE + " - " + location.getName();
+                FACEBOOK_SHARE_DESCRIPTION = event.getDescription() + "\n" +
+                        "Vandaag " + event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5);
+            }
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -79,7 +89,7 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(location.isFavorite()) {
+        if (location.isFavorite()) {
             menu.getItem(0).setIcon(R.drawable.unfavorite);
         }
 
@@ -100,35 +110,34 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         LatLng latLng = new LatLng(location.getLat(), location.getLon());
 
         map.addMarker(
-            new MarkerOptions()
-                .position(latLng)
-                .title(location.getName())
+                new MarkerOptions()
+                        .position(latLng)
+                        .title(location.getName())
         );
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
     }
 
     public void shareLocation(View v) {
-        if(shareDialog.canShow(ShareLinkContent.class)) {
+        if (shareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle(FACEBOOK_SHARE_TITLE)
-                .setContentDescription(FACEBOOK_SHARE_DESCRIPTION)
-                .setContentUrl(FACEBOOK_SHARE_URI)
-                .build();
+                    .setContentTitle(FACEBOOK_SHARE_TITLE)
+                    .setContentDescription(FACEBOOK_SHARE_DESCRIPTION)
+                    .setContentUrl(FACEBOOK_SHARE_URI)
+                    .build();
             shareDialog.show(linkContent);
         }
     }
 
     public void favorite(MenuItem item) {
-        if(location.isFavorite()) {
+        if (location.isFavorite()) {
             item.setIcon(R.drawable.favorite);
             UserRepository.removeFavorite(location);
             location.setFavorite(false);
         } else {
             item.setIcon(R.drawable.unfavorite);
             UserRepository.addFavorite(location);
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            location.setFavorite(true);
         }
     }
 
@@ -141,22 +150,19 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         View header = getLayoutInflater().inflate(R.layout.activity_detail_header, null);
         View footer = getLayoutInflater().inflate(R.layout.activity_detail_footer, null);
 
-        if(AccessToken.getCurrentAccessToken() != null) {
+        if (AccessToken.getCurrentAccessToken() != null) {
             callbackManager = CallbackManager.Factory.create();
             shareDialog = new ShareDialog(this);
             setShareDialogRegister();
-        } else {
-            Button button = (Button) footer.findViewById(R.id.share_button);
-            button.setVisibility(View.GONE);
         }
 
         list.addHeaderView(header);
         list.addFooterView(footer);
 
-        TextView address = (TextView) findViewById(R.id.address_text);
-        address.setText(location.getAddress());
-
         TextView description = (TextView) findViewById(R.id.description_text);
         description.setText(location.getDescription());
+
+        TextView address = (TextView) findViewById(R.id.address_text);
+        address.setText("Adres: " + location.getAddress());
     }
 }
