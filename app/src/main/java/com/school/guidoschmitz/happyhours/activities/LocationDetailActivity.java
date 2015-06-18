@@ -48,8 +48,8 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
     private static final int ZOOM_LEVEL = 14;
     private boolean favorite = false;
 
-    private static String FACEBOOK_SHARE_TITLE = "Happy Hours";
-    private static String FACEBOOK_SHARE_DESCRIPTION = "Get the most booz out of your night";
+    private static String FACEBOOK_SHARE_TITLE;
+    private static String FACEBOOK_SHARE_DESCRIPTION;
     private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://happy-hours.com/");
 
     @Override
@@ -64,7 +64,7 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         int dayOfWeek = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
         for(Event event : location.getEvents()) {
             if(event.getDayOfWeek() == dayOfWeek) {
-                FACEBOOK_SHARE_TITLE = FACEBOOK_SHARE_TITLE + " - " + location.getName();
+                FACEBOOK_SHARE_TITLE = "Happy Hours - " + location.getName();
                 FACEBOOK_SHARE_DESCRIPTION = event.getDescription() + "\n" +
                         "Vandaag " + event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5);
             }
