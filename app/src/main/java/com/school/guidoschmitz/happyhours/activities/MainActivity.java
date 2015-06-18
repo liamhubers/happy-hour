@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity
 
         navItems = new ArrayList<>();
         navItems.add(new NavItem("Happy Hours", "", R.drawable.home));
-        navItems.add(new NavItem("Favorites", "", R.drawable.heart));
+        navItems.add(new NavItem("Favorieten", "", R.drawable.heart));
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.nav_list);

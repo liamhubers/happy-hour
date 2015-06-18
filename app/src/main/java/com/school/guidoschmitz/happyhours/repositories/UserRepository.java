@@ -23,6 +23,10 @@ public class UserRepository extends CacheRepository {
         getDatabase().delete(DBContract.Favorite.TABLE, DBContract.Favorite.LOCATION_ID + " = " + location.getId(), null);
     }
 
+    public static void removeFavorites() {
+        getDatabase().execSQL("DELETE FROM "+ DBContract.Favorite.TABLE);
+    }
+
     public static ArrayList<Location> getFavorites() {
         ArrayList<Location> locations = new ArrayList<>();
 

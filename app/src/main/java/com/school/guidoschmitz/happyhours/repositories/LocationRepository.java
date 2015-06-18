@@ -103,4 +103,8 @@ public class LocationRepository extends CacheRepository {
 
         return false;
     }
+
+    public static void removeAll() {
+        getDatabase().execSQL("DELETE FROM " + DBContract.Location.TABLE);
+    }
 }

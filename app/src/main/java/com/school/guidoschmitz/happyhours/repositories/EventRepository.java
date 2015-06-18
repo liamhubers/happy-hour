@@ -82,4 +82,8 @@ public class EventRepository extends CacheRepository {
 
         return values;
     }
+
+    public static void removeAll() {
+        getDatabase().execSQL("DELETE FROM " + DBContract.Event.TABLE);
+    }
 }
