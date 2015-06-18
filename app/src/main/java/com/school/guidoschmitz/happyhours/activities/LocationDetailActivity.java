@@ -144,11 +144,6 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
     public void setData() {
         EventsAdapter adapter = new EventsAdapter(this, R.layout.activity_favorites_list_item, location.getEvents());
         ListView list = (ListView) findViewById(R.id.events);
-        list.setDivider(null);
-        list.setAdapter(adapter);
-
-        View header = getLayoutInflater().inflate(R.layout.activity_detail_header, null);
-        View footer = getLayoutInflater().inflate(R.layout.activity_detail_footer, null);
 
         if (AccessToken.getCurrentAccessToken() != null) {
             callbackManager = CallbackManager.Factory.create();
@@ -156,8 +151,13 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
             setShareDialogRegister();
         }
 
+        View header = getLayoutInflater().inflate(R.layout.activity_detail_header, null);
+        View footer = getLayoutInflater().inflate(R.layout.activity_detail_footer, null);
+
         list.addHeaderView(header);
         list.addFooterView(footer);
+        list.setDivider(null);
+        list.setAdapter(adapter);
 
         TextView description = (TextView) findViewById(R.id.description_text);
         description.setText(location.getDescription());
