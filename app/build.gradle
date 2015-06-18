@@ -27,4 +27,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.google.android.gms:play-services-maps:7.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.robolectric:robolectric:2.3'
+
+    androidTestCompile "junit:junit-dep:4.11"
 }

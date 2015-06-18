@@ -31,9 +31,7 @@ public class Receiver extends BroadcastReceiver {
             this.handler();
             try {
                 this.activity.unregisterReceiver(this);
-            } catch(Exception e) {
-                // not registered
-            }
+            } catch(Exception e) { }
         } else {
             this.activity.registerReceiver(this, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
@@ -48,7 +46,6 @@ public class Receiver extends BroadcastReceiver {
     }
 
     private void handler() {
-        Log.i("hander", "online!");
         new LocationRepository().onOnline(this.fragment);
     }
 
