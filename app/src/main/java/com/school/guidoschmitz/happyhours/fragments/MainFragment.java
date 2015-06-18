@@ -80,7 +80,9 @@ public class MainFragment extends MapViewFragment {
             builder.include(latLng);
             markerLocations.put(marker, location);
         }
-        bounds = builder.build();
+        if(locations.size() > 0) {
+            bounds = builder.build();
+        }
     }
 
     public void setCurrentPosition() {
