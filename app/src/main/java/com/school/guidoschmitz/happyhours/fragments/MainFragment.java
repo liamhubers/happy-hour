@@ -15,13 +15,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,9 @@ public class MainFragment extends MapViewFragment {
 
     private GoogleMap map;
     private HashMap<Marker, Location> markerLocations = new HashMap<>();
-    private static final int ZOOM_LEVEL = 10;
+    private LatLngBounds bounds;
+    private static final int ZOOM_LEVEL = 12;
+    private static final int BOUNDS_PADDING = 250;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,15 +68,19 @@ public class MainFragment extends MapViewFragment {
         ArrayList<Location> locations = LocationRepository.all();
 
         map.clear();
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Location location : locations) {
             LatLng latLng = new LatLng(location.getLat(), location.getLon());
             Marker marker = map.addMarker(
-                new MarkerOptions()
-                    .position(latLng)
-                    .title(location.getName())
+                    new MarkerOptions()
+                            .position(latLng)
+                            .title(location.getName())
             );
+            builder.include(latLng);
             markerLocations.put(marker, location);
         }
+        bounds = builder.build();
     }
 
     public void setCurrentPosition() {
@@ -82,6 +89,13 @@ public class MainFragment extends MapViewFragment {
         android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
         if (location != null) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL));
+        } else {
+            map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, BOUNDS_PADDING));
+                }
+            });
         }
 
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
