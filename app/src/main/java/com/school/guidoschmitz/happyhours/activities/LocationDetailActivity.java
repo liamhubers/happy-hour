@@ -38,6 +38,9 @@ import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 import com.school.guidoschmitz.happyhours.repositories.UserRepository;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class LocationDetailActivity extends LocationDetailExtendActivity {
 
     private GoogleMap map;
@@ -47,9 +50,7 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
 
     private static String FACEBOOK_SHARE_TITLE = "Happy Hours";
     private static String FACEBOOK_SHARE_DESCRIPTION = "Get the most booz out of your night";
-    private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://developers.facebook.com/android");
-
-    private static final String[] days = new String[]{"Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"};
+    private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://happy-hours.com/");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,15 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         referredIntent = getIntent();
         location = (Location) referredIntent.getSerializableExtra("location");
         location.setFavorite(LocationRepository.isFavorite(location));
+
+        int dayOfWeek = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
+        for(Event event : location.getEvents()) {
+            if(event.getDayOfWeek() == dayOfWeek) {
+                FACEBOOK_SHARE_TITLE = FACEBOOK_SHARE_TITLE + " - " + location.getName();
+                FACEBOOK_SHARE_DESCRIPTION = event.getDescription() + "\n" +
+                        "Vandaag " + event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5);
+            }
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -144,18 +154,15 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
             callbackManager = CallbackManager.Factory.create();
             shareDialog = new ShareDialog(this);
             setShareDialogRegister();
-        } else {
-            Button button = (Button) footer.findViewById(R.id.share_button);
-            button.setVisibility(View.GONE);
         }
 
         list.addHeaderView(header);
         list.addFooterView(footer);
 
-        TextView address = (TextView) findViewById(R.id.address_text);
-        address.setText(location.getAddress());
-
         TextView description = (TextView) findViewById(R.id.description_text);
         description.setText(location.getDescription());
+
+        TextView address = (TextView) findViewById(R.id.address_text);
+        address.setText("Adres: " + location.getAddress());
     }
 }

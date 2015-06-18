@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.models.Event;
 
@@ -22,7 +24,7 @@ import java.util.GregorianCalendar;
  */
 public class EventsAdapter extends ArrayAdapter<Event> {
 
-    private static final String[] days = new String[] { "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag" };
+    public static final String[] DAYS = new String[] { "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag" };
 
     public EventsAdapter(Context context, int resource, ArrayList<Event> events) {
         super(context, resource, events);
@@ -45,6 +47,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
         TextView title = (TextView) v.findViewById(R.id.title);
         TextView description = (TextView) v.findViewById(R.id.description);
         TextView subdescription = (TextView) v.findViewById(R.id.subdescription);
+        Button share = (Button) v.findViewById(R.id.share_button);
 
         int padding = v.getResources().getDimensionPixelSize(R.dimen.detail_list_item_today_padding);
         int paddingSmall = v.getResources().getDimensionPixelSize(R.dimen.detail_list_item_today_padding_small);
@@ -62,17 +65,22 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             subdescription.setText(event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5));
             subdescription.setTextColor(Color.WHITE);
             subdescription.setVisibility(View.VISIBLE);
+
+            if (AccessToken.getCurrentAccessToken() != null) {
+                share.setVisibility(View.VISIBLE);
+            }
         } else {
-            v.setBackgroundColor(Color.WHITE); // #F6F6F6
+            v.setBackgroundColor(Color.WHITE);
             v.setPadding(padding, paddingSmall, padding, (int) (paddingSmall * 1.35));
 
             title.setText(event.getDescription());
             title.setTextColor(Color.parseColor("#111111"));
 
-            description.setText(days[event.getDayOfWeek()] + " " + event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5));
+            description.setText(DAYS[event.getDayOfWeek()] + " " + event.getStartTime().substring(0, 5) + " - " + event.getEndTime().substring(0, 5));
             description.setTextColor(Color.parseColor("#111111"));
 
             subdescription.setVisibility(View.GONE);
+            share.setVisibility(View.GONE);
         }
 
         return v;

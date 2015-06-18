@@ -20,13 +20,12 @@ import java.util.ArrayList;
 
 public class FavoritesFragment extends ListFragment {
 
-    ArrayList<Location> favorites;
+    ArrayList<Location> favorites = new ArrayList<>();
+    FavoritesAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        favorites = UserRepository.getFavorites();
-
-        FavoritesAdapter adapter = new FavoritesAdapter(inflater.getContext(), R.layout.activity_favorites_list_item, favorites);
+        adapter = new FavoritesAdapter(inflater.getContext(), R.layout.activity_favorites_list_item, favorites);
         setListAdapter(adapter);
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -37,5 +36,17 @@ public class FavoritesFragment extends ListFragment {
         Intent intent = new Intent(getActivity().getBaseContext(), LocationDetailActivity.class);
         intent.putExtra("location", favorites.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        favorites.clear();
+        ArrayList<Location> newFavorites = UserRepository.getFavorites();
+        for(Location location : newFavorites){
+            favorites.add(location);
+        }
+
+        adapter.notifyDataSetChanged();
+        super.onStart();
     }
 }

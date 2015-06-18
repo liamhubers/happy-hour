@@ -14,9 +14,9 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -45,18 +45,23 @@
                 android:textColor="#111"/>
         </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:orientation="vertical">
-        <ImageButton
+            android:orientation="horizontal">
+            <Button
                 android:id="@+id/share_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:padding="10dip"
-                android:src="@drawable/share"
+                android:drawableLeft="@drawable/share"
+                android:drawablePadding="10dp"
+                android:text="Delen"
+                android:textColor="?attr/colorPrimary"
+                android:background="#ffffff"
                 android:onClick="shareLocation"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
