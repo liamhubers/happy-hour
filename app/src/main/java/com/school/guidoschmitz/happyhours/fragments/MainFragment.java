@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,17 +22,18 @@ import com.school.guidoschmitz.happyhours.R;
 import com.school.guidoschmitz.happyhours.Receiver;
 import com.school.guidoschmitz.happyhours.activities.LocationDetailActivity;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainFragment extends Fragment {
-    private MapView mapView;
+public class MainFragment extends MapViewFragment {
+
     private GoogleMap map;
-    private LatLngBounds bounds;
     private HashMap<Marker, Location> markerLocations = new HashMap<>();
-    private static final int ZOOM_LEVEL = 10;
+    private LatLngBounds bounds;
+    private static final int ZOOM_LEVEL = 12;
+    private static final int BOUNDS_PADDING = 250;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,25 +45,6 @@ public class MainFragment extends Fragment {
         map = mapView.getMap();
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setMyLocationEnabled(true);
-
-        ArrayList<Location> locations = LocationRepository.all();
-        ArrayList<Marker> markers = new ArrayList<>();
-
-        for (Location location : locations) {
-            LatLng latLng = new LatLng(location.getLat(), location.getLon());
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(location.getName()));
-
-            markers.add(marker);
-        }
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-
-        bounds = builder.build();
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -87,15 +68,19 @@ public class MainFragment extends Fragment {
         ArrayList<Location> locations = LocationRepository.all();
 
         map.clear();
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Location location : locations) {
             LatLng latLng = new LatLng(location.getLat(), location.getLon());
             Marker marker = map.addMarker(
-                new MarkerOptions()
-                    .position(latLng)
-                    .title(location.getName())
+                    new MarkerOptions()
+                            .position(latLng)
+                            .title(location.getName())
             );
+            builder.include(latLng);
             markerLocations.put(marker, location);
         }
+        bounds = builder.build();
     }
 
     public void setCurrentPosition() {
@@ -103,8 +88,14 @@ public class MainFragment extends Fragment {
 
         android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
         if (location != null) {
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-            map.moveCamera(cu);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM_LEVEL));
+        } else {
+            map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, BOUNDS_PADDING));
+                }
+            });
         }
 
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {

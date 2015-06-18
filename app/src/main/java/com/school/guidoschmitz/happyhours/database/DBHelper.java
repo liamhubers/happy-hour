@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "database.db";
-    static final Integer VERSION = 2;
+    static final Integer VERSION = 3;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -26,8 +26,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE " + DBContract.Event.TABLE + " (" +
                 DBContract.Event._ID + " INTEGER ," +
-                DBContract.Event.LOCATION_ID + " INTEGER ," +
-                DBContract.Event.DAY_OF_WEEK + " INTEGER ," +
+                DBContract.Event.LOCATION_ID + " INTEGER NOT NULL ," +
+                DBContract.Event.DESCRIPTION + " TEXT NOT NULL ," +
+                DBContract.Event.DAY_OF_WEEK + " INTEGER NOT NULL ," +
                 DBContract.Event.START_TIME + " TIME ," +
                 DBContract.Event.END_TIME + " TIME" +
                 ")");
@@ -41,6 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.Location.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DBContract.Event.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DBContract.Favorite.TABLE);
         onCreate(db);
     }
 }

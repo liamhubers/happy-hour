@@ -1,13 +1,12 @@
-package com.school.guidoschmitz.happyhours.repositories.user;
+package com.school.guidoschmitz.happyhours.repositories;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.school.guidoschmitz.happyhours.database.DBContract;
 import com.school.guidoschmitz.happyhours.models.Location;
 import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import java.util.ArrayList;
 

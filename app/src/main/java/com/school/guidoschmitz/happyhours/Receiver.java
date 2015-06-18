@@ -12,7 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
+import com.school.guidoschmitz.happyhours.repositories.LocationRepository;
 
 import java.util.ArrayList;
 

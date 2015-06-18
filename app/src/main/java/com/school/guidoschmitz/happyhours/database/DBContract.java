@@ -20,6 +20,7 @@ public class DBContract {
         public static final String TABLE = "events";
 
         public static final String LOCATION_ID = "location_id";
+        public static final String DESCRIPTION = "description";
         public static final String DAY_OF_WEEK = "day_of_week";
         public static final String START_TIME = "start_time";
         public static final String END_TIME = "end_time";

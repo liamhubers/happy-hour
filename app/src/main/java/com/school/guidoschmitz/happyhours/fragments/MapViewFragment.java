@@ -3,7 +3,6 @@ package com.school.guidoschmitz.happyhours.fragments;
 import android.app.Fragment;
 
 import com.google.android.gms.maps.MapView;
-import com.school.guidoschmitz.happyhours.repositories.location.LocationRepository;
 
 /**
  * Created by Liam Hubers on 16-6-2015.

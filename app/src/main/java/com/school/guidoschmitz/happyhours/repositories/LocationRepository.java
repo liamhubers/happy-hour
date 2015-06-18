@@ -1,4 +1,4 @@
-package com.school.guidoschmitz.happyhours.repositories.location;
+package com.school.guidoschmitz.happyhours.repositories;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -6,8 +6,10 @@ import android.util.Log;
 import com.school.guidoschmitz.happyhours.LocationApi;
 import com.school.guidoschmitz.happyhours.database.DBContract;
 import com.school.guidoschmitz.happyhours.fragments.MainFragment;
+import com.school.guidoschmitz.happyhours.models.Event;
 import com.school.guidoschmitz.happyhours.models.Location;
-import com.school.guidoschmitz.happyhours.repositories.CacheRepository;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
@@ -34,6 +36,10 @@ public class LocationRepository extends CacheRepository {
 
     public static void save(Location location) {
         getDatabase().insert(DBContract.Location.TABLE, "", toContentValues(location));
+
+        for(Event event : location.getEvents()) {
+            EventRepository.save(event);
+        }
     }
 
     public static Location toLocation(JSONObject object) {
@@ -47,12 +53,15 @@ public class LocationRepository extends CacheRepository {
             location.setLat(object.getDouble("lat"));
             location.setLon(object.getDouble("lon"));
             location.setThumbnail(object.getString("thumbnail"));
+
+            location.setEvents(EventRepository.toEvents(object.getJSONArray("events")));
         } catch (Exception e) {
             Log.i("JSON", "Failed to parse object to location");
         }
 
         return location;
     }
+
     public static Location toLocation(Cursor cursor) {
         Location location = new Location();
 
@@ -63,6 +72,8 @@ public class LocationRepository extends CacheRepository {
         location.setLat(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LAT)));
         location.setLon(cursor.getDouble(cursor.getColumnIndex(DBContract.Location.LON)));
         location.setThumbnail(cursor.getString(cursor.getColumnIndex(DBContract.Location.THUMBNAIL)));
+
+        location.setEvents(EventRepository.all(location));
 
         return location;
     }

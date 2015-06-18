@@ -1,10 +1,17 @@
 package com.school.guidoschmitz.happyhours.models;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
+    protected int locationId;
     protected int dayOfWeek;
     protected String description;
     protected String startTime;
     protected String endTime;
+
+    public int getLocationId() { return this.locationId; }
+
+    public void setLocationId(int locationId) { this.locationId = locationId; }
 
     public int getDayOfWeek() {
         return dayOfWeek;
