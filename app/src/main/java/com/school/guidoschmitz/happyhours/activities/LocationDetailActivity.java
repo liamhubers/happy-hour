@@ -45,11 +45,11 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
     private static final int ZOOM_LEVEL = 14;
     private boolean favorite = false;
 
-    private static String FACEBOOK_SHARE_TITLE = "Hello Facebook";
-    private static String FACEBOOK_SHARE_DESCRIPTION = "test";
+    private static String FACEBOOK_SHARE_TITLE = "Happy Hours";
+    private static String FACEBOOK_SHARE_DESCRIPTION = "Get the most booz out of your night";
     private static final Uri FACEBOOK_SHARE_URI = Uri.parse("http://developers.facebook.com/android");
 
-    private static final String[] days = new String[]{ "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag" };
+    private static final String[] days = new String[]{"Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(location.isFavorite()) {
+        if (location.isFavorite()) {
             menu.getItem(0).setIcon(R.drawable.unfavorite);
         }
 
@@ -100,35 +100,34 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         LatLng latLng = new LatLng(location.getLat(), location.getLon());
 
         map.addMarker(
-            new MarkerOptions()
-                .position(latLng)
-                .title(location.getName())
+                new MarkerOptions()
+                        .position(latLng)
+                        .title(location.getName())
         );
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
     }
 
     public void shareLocation(View v) {
-        if(shareDialog.canShow(ShareLinkContent.class)) {
+        if (shareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle(FACEBOOK_SHARE_TITLE)
-                .setContentDescription(FACEBOOK_SHARE_DESCRIPTION)
-                .setContentUrl(FACEBOOK_SHARE_URI)
-                .build();
+                    .setContentTitle(FACEBOOK_SHARE_TITLE)
+                    .setContentDescription(FACEBOOK_SHARE_DESCRIPTION)
+                    .setContentUrl(FACEBOOK_SHARE_URI)
+                    .build();
             shareDialog.show(linkContent);
         }
     }
 
     public void favorite(MenuItem item) {
-        if(location.isFavorite()) {
+        if (location.isFavorite()) {
             item.setIcon(R.drawable.favorite);
             UserRepository.removeFavorite(location);
             location.setFavorite(false);
         } else {
             item.setIcon(R.drawable.unfavorite);
             UserRepository.addFavorite(location);
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            location.setFavorite(true);
         }
     }
 
@@ -141,7 +140,7 @@ public class LocationDetailActivity extends LocationDetailExtendActivity {
         View header = getLayoutInflater().inflate(R.layout.activity_detail_header, null);
         View footer = getLayoutInflater().inflate(R.layout.activity_detail_footer, null);
 
-        if(AccessToken.getCurrentAccessToken() != null) {
+        if (AccessToken.getCurrentAccessToken() != null) {
             callbackManager = CallbackManager.Factory.create();
             shareDialog = new ShareDialog(this);
             setShareDialogRegister();
