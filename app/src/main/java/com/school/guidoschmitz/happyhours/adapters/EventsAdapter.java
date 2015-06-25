@@ -52,7 +52,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
         int padding = v.getResources().getDimensionPixelSize(R.dimen.detail_list_item_today_padding);
         int paddingSmall = v.getResources().getDimensionPixelSize(R.dimen.detail_list_item_today_padding_small);
 
-        if(event.getDayOfWeek() == dayOfWeek) {
+        if(event.getDayOfWeek() == dayOfWeek - 1) {
             v.setBackgroundColor(getColor(R.attr.colorPrimaryDark, v));
             v.setPadding(padding, padding, padding, (int) (padding * 1.35));
 

@@ -22,7 +22,7 @@ public class EventRepository extends CacheRepository {
 
     public static ArrayList<Event> all(Location location) {
         ArrayList<Event> events = new ArrayList<>();
-        int dayOfWeek = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
+        int dayOfWeek = new GregorianCalendar().get(Calendar.DAY_OF_WEEK) - 1;
         Cursor cursor = getDatabase().rawQuery("SELECT * FROM " + DBContract.Event.TABLE + " WHERE " + DBContract.Event.LOCATION_ID + " = " + location.getId() +" ORDER BY (" + DBContract.Event.DAY_OF_WEEK + " = " + dayOfWeek + ") DESC, " + DBContract.Event.DAY_OF_WEEK, null);
 
         if (cursor.moveToFirst()) {
